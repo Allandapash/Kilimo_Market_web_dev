@@ -58,7 +58,7 @@ export default function BrowsePage({ listings }: BrowsePageProps) {
       </div>
 
       {filteredListings.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 [perspective:1000px]">
           {filteredListings.map(listing => (
             <ProduceCard key={listing.id} listing={listing} />
           ))}
