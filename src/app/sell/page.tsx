@@ -20,7 +20,7 @@ import ImageUploader from '@/components/image-uploader';
 
 const sellFormSchema = z.object({
   name: z.string().min(3, { message: "Produce name must be at least 3 characters." }),
-  category: z.enum(['Vegetable', 'Fruit', 'Grain', 'Other']),
+  category: z.enum(['Vegetable', 'Fruit', 'Grain', 'Legume', 'Meat', 'Dairy', 'Other']),
   quantity: z.coerce.number().positive(),
   unit: z.enum(['kg', 'lbs', 'item', 'bunch']),
   price: z.coerce.number().positive(),
@@ -87,6 +87,9 @@ export default function SellPage() {
                         <SelectItem value="Vegetable">Vegetable</SelectItem>
                         <SelectItem value="Fruit">Fruit</SelectItem>
                         <SelectItem value="Grain">Grain</SelectItem>
+                        <SelectItem value="Legume">Legume</SelectItem>
+                        <SelectItem value="Meat">Meat</SelectItem>
+                        <SelectItem value="Dairy">Dairy</SelectItem>
                         <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>

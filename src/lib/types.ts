@@ -3,7 +3,7 @@ import type { StaticImageData } from "next/image";
 export interface Produce {
   id: string;
   name: string;
-  category: 'Vegetable' | 'Fruit' | 'Grain' | 'Other';
+  category: 'Vegetable' | 'Fruit' | 'Grain' | 'Legume' | 'Meat' | 'Dairy' | 'Other';
   quantity: number;
   unit: 'kg' | 'lbs' | 'item' | 'bunch';
   price: number;
