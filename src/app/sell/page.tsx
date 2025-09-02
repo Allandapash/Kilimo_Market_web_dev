@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import ImageUploader from '@/components/image-uploader';
 import { useRouter } from 'next/navigation';
+import { addProduceListing } from '@/lib/data';
 
 const sellFormSchema = z.object({
   name: z.string().min(3, { message: "Produce name must be at least 3 characters." }),
@@ -51,10 +52,8 @@ export default function SellPage() {
     },
   });
 
-  function onSubmit(data: SellFormValues) {
-    console.log("New listing created:", data);
-    // In a real application, you would save this data to your database.
-    // For now, we just show a success message and redirect.
+  async function onSubmit(data: SellFormValues) {
+    await addProduceListing(data);
     toast({
       title: 'Listing Submitted!',
       description: `Your listing for ${data.name} has been created and is now visible on the dashboard.`,

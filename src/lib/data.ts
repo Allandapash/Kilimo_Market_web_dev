@@ -99,4 +99,16 @@ export async function getProduceListingById(id: string): Promise<Produce | undef
   return new Promise(resolve => setTimeout(() => resolve(listings.find(item => item.id === id)), 300));
 }
 
+export async function addProduceListing(listing: Omit<Produce, 'id' | 'location' | 'aiHint'>) {
+    const newListing: Produce = {
+        ...listing,
+        id: (listings.length + 1).toString(),
+        location: { lat: 34.0522 + (Math.random() - 0.5) * 0.5, lng: -118.2437 + (Math.random() - 0.5) * 0.5 }, // Randomize location slightly
+        aiHint: listing.name.toLowerCase(),
+        image: listing.image || `https://picsum.photos/seed/${listing.name.split(" ").join("-")}/600/400`,
+    };
+    listings.unshift(newListing); // Add to the beginning of the list
+    return newListing;
+}
+
 export const produceCategories = ['All', ...Array.from(new Set(listings.map(l => l.category)))];
