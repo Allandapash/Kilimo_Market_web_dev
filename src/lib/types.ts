@@ -1,0 +1,19 @@
+import type { StaticImageData } from "next/image";
+
+export interface Produce {
+  id: string;
+  name: string;
+  category: 'Vegetable' | 'Fruit' | 'Grain' | 'Other';
+  quantity: number;
+  unit: 'kg' | 'lbs' | 'item' | 'bunch';
+  price: number;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  farmName: string;
+  availability: Date;
+  description: string;
+  image: string;
+  aiHint: string;
+}
