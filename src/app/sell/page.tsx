@@ -5,18 +5,18 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { format } from 'date-fns';
-// import { Map, AdvancedMarker } from '@vis.gl/react-google-maps';
-import { Calendar as CalendarIcon, MapPin, Upload } from 'lucide-react';
+import { Calendar as CalendarIcon, Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import ImageUploader from '@/components/image-uploader';
 
 const sellFormSchema = z.object({
   name: z.string().min(3, { message: "Produce name must be at least 3 characters." }),
@@ -27,19 +27,13 @@ const sellFormSchema = z.object({
   availability: z.date(),
   description: z.string().max(500).optional(),
   farmName: z.string().min(2, { message: "Farm name is required."}),
-  // location: z.object({
-  //   lat: z.number(),
-  //   lng: z.number(),
-  // }).refine(val => val.lat !== 0 && val.lng !== 0, {
-  //   message: "Please select a location on the map.",
-  // }),
+  image: z.string().optional(),
 });
 
 type SellFormValues = z.infer<typeof sellFormSchema>;
 
 export default function SellPage() {
   const { toast } = useToast();
-  // const [mapCenter, setMapCenter] = useState({ lat: 34.0522, lng: -118.2437 });
   const form = useForm<SellFormValues>({
     resolver: zodResolver(sellFormSchema),
     defaultValues: {
@@ -51,11 +45,9 @@ export default function SellPage() {
       availability: new Date(),
       description: '',
       farmName: '',
-      // location: { lat: 0, lng: 0 },
+      image: '',
     },
   });
-
-  // const selectedLocation = form.watch('location');
 
   function onSubmit(data: SellFormValues) {
     console.log(data);
@@ -66,19 +58,6 @@ export default function SellPage() {
     });
     form.reset();
   }
-
-  // if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
-  //   return (
-  //       <div className="container mx-auto px-4 py-8">
-  //           <Card className="max-w-4xl mx-auto flex items-center justify-center p-8">
-  //               <div className="text-center">
-  //                   <p className="text-destructive font-semibold">This feature is not available.</p>
-  //                   <p className="text-muted-foreground">Google Maps API key is missing.</p>
-  //               </div>
-  //           </Card>
-  //       </div>
-  //   )
-  // }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -176,7 +155,6 @@ export default function SellPage() {
                   </FormItem>
                 )} />
 
-
                 <FormField name="description" control={form.control} render={({ field }) => (
                   <FormItem className="md:col-span-2">
                     <FormLabel>Description (Optional)</FormLabel>
@@ -185,15 +163,18 @@ export default function SellPage() {
                   </FormItem>
                 )} />
 
-                <div className="md:col-span-2 space-y-2">
-                    <FormLabel>Farm Location</FormLabel>
-                    <Card className="flex items-center justify-center p-8 border-dashed">
-                       <div className="text-center">
-                          <MapPin className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
-                          <p className="text-muted-foreground">Map functionality is temporarily disabled.</p>
-                       </div>
-                    </Card>
-                </div>
+                <FormField name="image" control={form.control} render={({ field }) => (
+                  <FormItem className="md:col-span-2">
+                    <FormLabel>Product Image</FormLabel>
+                    <FormControl>
+                      <ImageUploader
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
               </div>
               <Button type="submit" size="lg">
                 <Upload className="mr-2 h-5 w-5" />
