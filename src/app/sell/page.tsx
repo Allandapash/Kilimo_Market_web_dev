@@ -42,9 +42,14 @@ export default function SellPage() {
   const form = useForm<SellFormValues>({
     resolver: zodResolver(sellFormSchema),
     defaultValues: {
-      location: { lat: 0, lng: 0 },
+      name: '',
+      category: 'Vegetable',
+      quantity: 0,
       unit: 'kg',
-      category: 'Vegetable'
+      price: 0,
+      availability: new Date(),
+      description: '',
+      location: { lat: 0, lng: 0 },
     },
   });
 
