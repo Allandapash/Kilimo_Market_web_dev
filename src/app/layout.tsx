@@ -35,13 +35,11 @@ export default function RootLayout({
           ptSans.variable
         )}
       >
-        <MapProvider>
-          <div className="relative flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-          </div>
-          <Toaster />
-        </MapProvider>
+        <div className="relative flex min-h-screen flex-col">
+          <Header />
+          <main className="flex-1">{children}</main>
+        </div>
+        <Toaster />
       </body>
     </html>
   );

@@ -5,10 +5,10 @@ import type { Produce } from '@/lib/types';
 import { produceCategories } from '@/lib/data';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { List, Map as MapIcon } from 'lucide-react';
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+// import { List, Map as MapIcon } from 'lucide-react';
 import { ProduceCard } from './produce-card';
-import BrowseMap from './browse-map';
+// import BrowseMap from './browse-map';
 
 interface BrowsePageProps {
   listings: Produce[];
@@ -57,31 +57,18 @@ export default function BrowsePage({ listings }: BrowsePageProps) {
         </Select>
       </div>
 
-      <Tabs defaultValue="grid" className="w-full">
-        <div className="flex justify-center mb-4">
-            <TabsList>
-                <TabsTrigger value="grid"><List className="mr-2 h-4 w-4" />Grid View</TabsTrigger>
-                <TabsTrigger value="map"><MapIcon className="mr-2 h-4 w-4" />Map View</TabsTrigger>
-            </TabsList>
+      {filteredListings.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredListings.map(listing => (
+            <ProduceCard key={listing.id} listing={listing} />
+          ))}
         </div>
-        <TabsContent value="grid">
-          {filteredListings.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredListings.map(listing => (
-                <ProduceCard key={listing.id} listing={listing} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <h3 className="text-xl font-semibold">No listings found</h3>
-              <p className="text-muted-foreground">Try adjusting your search or filters.</p>
-            </div>
-          )}
-        </TabsContent>
-        <TabsContent value="map">
-            <BrowseMap listings={filteredListings} />
-        </TabsContent>
-      </Tabs>
+      ) : (
+        <div className="text-center py-16">
+          <h3 className="text-xl font-semibold">No listings found</h3>
+          <p className="text-muted-foreground">Try adjusting your search or filters.</p>
+        </div>
+      )}
     </>
   );
 }

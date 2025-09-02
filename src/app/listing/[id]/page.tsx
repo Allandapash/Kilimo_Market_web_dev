@@ -62,7 +62,7 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
                 </div>
                 <div className="flex items-center">
                   <MapPin className="mr-3 h-5 w-5 text-muted-foreground" />
-                  <span>Farm Location</span>
+                  <span>{listing.farmName}</span>
                 </div>
               </div>
               <Separator className="my-4" />

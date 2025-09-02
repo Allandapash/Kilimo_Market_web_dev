@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { format } from 'date-fns';
-import { Map, AdvancedMarker } from '@vis.gl/react-google-maps';
+// import { Map, AdvancedMarker } from '@vis.gl/react-google-maps';
 import { Calendar as CalendarIcon, MapPin, Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
@@ -26,19 +26,20 @@ const sellFormSchema = z.object({
   price: z.coerce.number().positive(),
   availability: z.date(),
   description: z.string().max(500).optional(),
-  location: z.object({
-    lat: z.number(),
-    lng: z.number(),
-  }).refine(val => val.lat !== 0 && val.lng !== 0, {
-    message: "Please select a location on the map.",
-  }),
+  farmName: z.string().min(2, { message: "Farm name is required."}),
+  // location: z.object({
+  //   lat: z.number(),
+  //   lng: z.number(),
+  // }).refine(val => val.lat !== 0 && val.lng !== 0, {
+  //   message: "Please select a location on the map.",
+  // }),
 });
 
 type SellFormValues = z.infer<typeof sellFormSchema>;
 
 export default function SellPage() {
   const { toast } = useToast();
-  const [mapCenter, setMapCenter] = useState({ lat: 34.0522, lng: -118.2437 });
+  // const [mapCenter, setMapCenter] = useState({ lat: 34.0522, lng: -118.2437 });
   const form = useForm<SellFormValues>({
     resolver: zodResolver(sellFormSchema),
     defaultValues: {
@@ -49,11 +50,12 @@ export default function SellPage() {
       price: 0,
       availability: new Date(),
       description: '',
-      location: { lat: 0, lng: 0 },
+      farmName: '',
+      // location: { lat: 0, lng: 0 },
     },
   });
 
-  const selectedLocation = form.watch('location');
+  // const selectedLocation = form.watch('location');
 
   function onSubmit(data: SellFormValues) {
     console.log(data);
@@ -65,18 +67,18 @@ export default function SellPage() {
     form.reset();
   }
 
-  if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
-    return (
-        <div className="container mx-auto px-4 py-8">
-            <Card className="max-w-4xl mx-auto flex items-center justify-center p-8">
-                <div className="text-center">
-                    <p className="text-destructive font-semibold">This feature is not available.</p>
-                    <p className="text-muted-foreground">Google Maps API key is missing.</p>
-                </div>
-            </Card>
-        </div>
-    )
-  }
+  // if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
+  //   return (
+  //       <div className="container mx-auto px-4 py-8">
+  //           <Card className="max-w-4xl mx-auto flex items-center justify-center p-8">
+  //               <div className="text-center">
+  //                   <p className="text-destructive font-semibold">This feature is not available.</p>
+  //                   <p className="text-muted-foreground">Google Maps API key is missing.</p>
+  //               </div>
+  //           </Card>
+  //       </div>
+  //   )
+  // }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -166,6 +168,15 @@ export default function SellPage() {
                   </FormItem>
                 )} />
 
+                <FormField name="farmName" control={form.control} render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Farm Name</FormLabel>
+                    <FormControl><Input placeholder="e.g., Sunrise Farms" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+
+
                 <FormField name="description" control={form.control} render={({ field }) => (
                   <FormItem className="md:col-span-2">
                     <FormLabel>Description (Optional)</FormLabel>
@@ -174,35 +185,15 @@ export default function SellPage() {
                   </FormItem>
                 )} />
 
-                <FormField name="location" control={form.control} render={({ field }) => (
-                  <FormItem className="md:col-span-2">
+                <div className="md:col-span-2 space-y-2">
                     <FormLabel>Farm Location</FormLabel>
-                    <FormDescription>Click on the map to pin your farm's location.</FormDescription>
-                    <FormControl>
-                      <div className="h-80 w-full overflow-hidden rounded-lg border">
-                        <Map
-                            center={mapCenter}
-                            zoom={9}
-                            gestureHandling={'greedy'}
-                            disableDefaultUI={true}
-                            mapId={'sell-map'}
-                            onClick={e => {
-                                const lat = e.detail.latLng?.lat ?? 0;
-                                const lng = e.detail.latLng?.lng ?? 0;
-                                field.onChange({ lat, lng });
-                            }}
-                        >
-                          {selectedLocation && selectedLocation.lat !== 0 && (
-                            <AdvancedMarker position={selectedLocation}>
-                              <MapPin className="h-8 w-8 text-destructive" />
-                            </AdvancedMarker>
-                          )}
-                        </Map>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
+                    <Card className="flex items-center justify-center p-8 border-dashed">
+                       <div className="text-center">
+                          <MapPin className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
+                          <p className="text-muted-foreground">Map functionality is temporarily disabled.</p>
+                       </div>
+                    </Card>
+                </div>
               </div>
               <Button type="submit" size="lg">
                 <Upload className="mr-2 h-5 w-5" />
