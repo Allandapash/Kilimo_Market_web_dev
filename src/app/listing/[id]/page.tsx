@@ -7,36 +7,13 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { MapPin, Calendar, Scale, ShoppingCart } from 'lucide-react';
 import { format } from 'date-fns';
-import { Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
+import { ListingMap } from '@/components/listing-map';
 
 export default async function ListingDetailPage({ params }: { params: { id: string } }) {
   const listing = await getProduceListingById(params.id);
 
   if (!listing) {
     notFound();
-  }
-
-  const MapLocation = () => {
-    if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) return null;
-    return (
-        <div className="h-64 w-full overflow-hidden rounded-lg border">
-            <Map
-                defaultCenter={listing.location}
-                defaultZoom={14}
-                gestureHandling={'greedy'}
-                disableDefaultUI={true}
-                mapId={`listing-map-${listing.id}`}
-            >
-                <AdvancedMarker position={listing.location}>
-                    <Pin 
-                        background={'hsl(var(--primary))'}
-                        borderColor={'hsl(var(--primary-foreground))'}
-                        glyphColor={'hsl(var(--primary-foreground))'}
-                    />
-                </AdvancedMarker>
-            </Map>
-        </div>
-    )
   }
 
   return (
@@ -54,7 +31,7 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
             />
           </div>
           <h2 className="text-2xl font-bold font-headline mb-2">Location</h2>
-          <MapLocation />
+          <ListingMap listing={listing} />
         </div>
         <div>
           <Card>
