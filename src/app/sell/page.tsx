@@ -17,6 +17,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import ImageUploader from '@/components/image-uploader';
+import { useRouter } from 'next/navigation';
 
 const sellFormSchema = z.object({
   name: z.string().min(3, { message: "Produce name must be at least 3 characters." }),
@@ -34,6 +35,7 @@ type SellFormValues = z.infer<typeof sellFormSchema>;
 
 export default function SellPage() {
   const { toast } = useToast();
+  const router = useRouter();
   const form = useForm<SellFormValues>({
     resolver: zodResolver(sellFormSchema),
     defaultValues: {
@@ -50,13 +52,16 @@ export default function SellPage() {
   });
 
   function onSubmit(data: SellFormValues) {
-    console.log(data);
+    console.log("New listing created:", data);
+    // In a real application, you would save this data to your database.
+    // For now, we just show a success message and redirect.
     toast({
       title: 'Listing Submitted!',
-      description: `Your listing for ${data.name} has been created.`,
+      description: `Your listing for ${data.name} has been created and is now visible on the dashboard.`,
       variant: 'default',
     });
     form.reset();
+    router.push('/dashboard');
   }
 
   return (
