@@ -2,16 +2,19 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Leaf, Bell, CircleUser, Menu, Search, ShoppingCart } from 'lucide-react';
+import { Leaf, Bell, CircleUser, Menu, ShoppingCart } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 const navItems = [
-  { href: '/', label: 'Browse' },
+  { href: '/', label: 'Home' },
+  { href: '/dashboard', label: 'Dashboard' },
   { href: '/sell', label: 'Sell Produce' },
   { href: '/trends', label: 'Market Trends' },
+  { href: '/about', label: 'About Us' },
+  { href: '/contact', label: 'Contact Us' },
 ];
 
 export function Header() {
@@ -25,7 +28,7 @@ export function Header() {
           href={item.href}
           className={cn(
             'text-sm font-medium transition-colors hover:text-primary',
-            pathname === item.href ? 'text-primary' : 'text-muted-foreground'
+            (pathname === item.href || (item.href === '/dashboard' && pathname.startsWith('/listing'))) ? 'text-primary' : 'text-muted-foreground'
           )}
         >
           {item.label}

@@ -14,8 +14,8 @@ const listings: Produce[] = [
     farmName: 'Sunset Farms',
     availability: new Date(today.setDate(today.getDate() + 7)),
     description: 'Freshly harvested organic carrots, full of flavor and nutrients. Perfect for roasting, salads, or juicing.',
-    image: 'https://picsum.photos/600/400?random=1',
-    aiHint: 'carrots organic'
+    image: 'https://picsum.photos/seed/carrots/600/400',
+    aiHint: 'organic carrots'
   },
   {
     id: '2',
@@ -28,8 +28,8 @@ const listings: Produce[] = [
     farmName: 'Orchard Valley',
     availability: new Date(today.setDate(today.getDate() + 3)),
     description: 'Crisp and sweet Gala apples, ideal for snacking, baking, and making applesauce.',
-    image: 'https://picsum.photos/600/400?random=2',
-    aiHint: 'apples gala'
+    image: 'https://picsum.photos/seed/apples/600/400',
+    aiHint: 'gala apples'
   },
   {
     id: '3',
@@ -42,7 +42,7 @@ const listings: Produce[] = [
     farmName: 'Green Thumb Gardens',
     availability: new Date(today.setDate(today.getDate() + 1)),
     description: 'Juicy and flavorful heirloom tomatoes in a variety of colors and shapes. Taste the difference!',
-    image: 'https://picsum.photos/600/400?random=3',
+    image: 'https://picsum.photos/seed/tomatoes/600/400',
     aiHint: 'heirloom tomatoes'
   },
   {
@@ -56,7 +56,7 @@ const listings: Produce[] = [
     farmName: 'Golden Plains Grains',
     availability: new Date(today.setDate(today.getDate() + 30)),
     description: 'High-quality hard red wheat, perfect for milling your own flour. Excellent for breads and pasta.',
-    image: 'https://picsum.photos/600/400?random=4',
+    image: 'https://picsum.photos/seed/wheat/600/400',
     aiHint: 'wheat grain'
   },
   {
@@ -70,7 +70,7 @@ const listings: Produce[] = [
     farmName: 'Cornfield County',
     availability: new Date(today.setDate(today.getDate() + 5)),
     description: 'Tender and sweet corn on the cob. A summer classic for grilling or boiling.',
-    image: 'https://picsum.photos/600/400?random=5',
+    image: 'https://picsum.photos/seed/corn/600/400',
     aiHint: 'sweet corn'
   },
   {
@@ -84,8 +84,8 @@ const listings: Produce[] = [
     farmName: 'Berry Patch Farms',
     availability: new Date(today.setDate(today.getDate() + 2)),
     description: 'Plump, red, and juicy strawberries, picked at the peak of ripeness.',
-    image: 'https://picsum.photos/600/400?random=6',
-    aiHint: 'strawberries fresh'
+    image: 'https://picsum.photos/seed/strawberries/600/400',
+    aiHint: 'fresh strawberries'
   }
 ];
 
