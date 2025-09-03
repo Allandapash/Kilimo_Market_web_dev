@@ -17,12 +17,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useEffect, useState } from 'react';
 
 const navItems = [
   { href: '/', label: 'Home' },
   { href: '/dashboard', label: 'Dashboard' },
-  { href: '/sell', label: 'Sell' },
-  { href: '/orders', label: 'My Orders' },
+  { href: '/sell', label: 'Sell', roles: ['Farmer'] },
+  { href: '/orders', label: 'My Orders', roles: ['Buyer'] },
   { href: '/trends', label: 'Trends' },
 ];
 
@@ -31,6 +32,11 @@ export function Header() {
   const router = useRouter();
   const { cartItems } = useCart();
   const { user, logout } = useAuth();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.orderQuantity, 0);
 
@@ -42,10 +48,21 @@ export function Header() {
   const NavLinks = ({ className }: { className?: string }) => (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
       {navItems.map((item) => {
-        // Hide "Sell" from non-farmers and "My Orders" from non-buyers
+        if (!isClient && item.roles) {
+          return null;
+        }
+
+        if (item.roles) {
+          if (!user || !item.roles.includes(user.role)) {
+            return null;
+          }
+        }
+        
+        // Simplified logic for Sell/Orders link visibility based on roles
         if ((item.href === '/sell' && user?.role !== 'Farmer') || (item.href === '/orders' && user?.role === 'Farmer')) {
           if (user) return null;
         }
+
         return (
           <Link
             key={item.href}
@@ -92,12 +109,12 @@ export function Header() {
                     </Link>
                     <NavLinks className="flex-col !space-x-0 space-y-2 items-start" />
                      <div className="mt-4 flex flex-col space-y-2 border-t pt-4">
-                        {user ? (
+                        {isClient && user ? (
                            <Button onClick={handleLogout}>
                               <LogOut className="mr-2 h-4 w-4" />
                               Logout
                             </Button>
-                        ) : (
+                        ) : isClient && (
                           <>
                             <Button asChild variant="outline">
                                 <Link href="/login">Login</Link>
@@ -120,7 +137,7 @@ export function Header() {
             <span className="sr-only">Notifications</span>
           </Button>
 
-          {user?.role !== 'Farmer' && (
+          {isClient && user?.role !== 'Farmer' && (
             <Button variant="ghost" size="icon" asChild>
               <Link href="/cart">
                   <ShoppingCart className="h-5 w-5" />
@@ -133,7 +150,7 @@ export function Header() {
           )}
 
           <div className="hidden md:flex items-center gap-2">
-            {user ? (
+            {isClient && user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
@@ -156,7 +173,7 @@ export function Header() {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            ) : (
+            ) : isClient && (
               <>
                 <Button asChild variant="ghost">
                     <Link href="/login">Login</Link>
