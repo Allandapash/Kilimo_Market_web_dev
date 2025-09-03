@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -39,23 +40,19 @@ export function Header() {
   const { user, logout } = useAuth();
   const [isMounted, setIsMounted] = useState(false);
   
-  const [navItems, setNavItems] = useState<NavItem[]>(baseNavItems);
-
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (isMounted && user) {
-        const userRole = user.role as keyof typeof roleNavItems;
-        const additionalItems = roleNavItems[userRole] || [];
-        setNavItems([...baseNavItems, ...additionalItems]);
-    } else {
-        setNavItems(baseNavItems);
+  const getNavItems = () => {
+    if (!user) {
+        return baseNavItems;
     }
-  }, [user, isMounted]);
+    const userRole = user.role as keyof typeof roleNavItems;
+    const additionalItems = roleNavItems[userRole] || [];
+    return [...baseNavItems, ...additionalItems];
+  }
 
-  
   const handleLogout = () => {
     logout();
     router.push('/');
@@ -63,7 +60,7 @@ export function Header() {
 
   const NavLinks = ({ className }: { className?: string }) => (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
-      {navItems.map((item) => (
+      {getNavItems().map((item) => (
           <Link
             key={item.href}
             href={item.href}
@@ -89,7 +86,7 @@ export function Header() {
               AgriLink
             </span>
           </Link>
-          <NavLinks />
+          {isMounted && <NavLinks />}
         </div>
 
         {/* Mobile Menu */}
@@ -107,7 +104,7 @@ export function Header() {
                         <Leaf className="h-6 w-6 text-primary" />
                         <span className="font-bold">AgriLink</span>
                     </Link>
-                    <NavLinks className="flex-col !space-x-0 space-y-2 items-start" />
+                   {isMounted && <NavLinks className="flex-col !space-x-0 space-y-2 items-start" />}
                      <div className="mt-4 flex flex-col space-y-2 border-t pt-4">
                         {isMounted && user ? (
                            <Button onClick={handleLogout}>
