@@ -17,8 +17,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { LogIn } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/auth-context";
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email." }),
@@ -29,8 +27,6 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export default function LoginPage() {
   const { toast } = useToast();
-  const router = useRouter();
-  const { login } = useAuth();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -40,25 +36,11 @@ export default function LoginPage() {
   });
 
   function onSubmit(data: LoginFormValues) {
-    const isFarmer = data.email.toLowerCase().includes('farmer');
-    const role = isFarmer ? 'Farmer' : 'Buyer';
-    
-    // In a real app, you would get the user's name from your backend
-    const name = data.email.split('@')[0];
-
-    login({ name, role });
-
+    console.log(data);
     toast({
-      title: "Logged In Successfully!",
-      description: `Welcome back, ${name}! Redirecting you...`,
+      title: "Logged In!",
+      description: "You have successfully logged in.",
     });
-    
-    if (role === 'Farmer') {
-        router.push('/sell');
-    } else {
-        router.push('/dashboard');
-    }
-
     form.reset();
   }
 

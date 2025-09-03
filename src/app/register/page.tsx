@@ -18,8 +18,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { UserPlus } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/auth-context";
 
 const registerFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -32,8 +30,6 @@ type RegisterFormValues = z.infer<typeof registerFormSchema>;
 
 export default function RegisterPage() {
   const { toast } = useToast();
-  const router = useRouter();
-  const { login } = useAuth();
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -45,17 +41,11 @@ export default function RegisterPage() {
   });
 
   function onSubmit(data: RegisterFormValues) {
-    login({ name: data.name, role: data.role });
+    console.log(data);
     toast({
       title: "Registration Successful!",
-      description: "Your account has been created. Redirecting...",
+      description: "Your account has been created.",
     });
-
-    if (data.role === 'Farmer') {
-      router.push('/sell');
-    } else {
-      router.push('/dashboard');
-    }
   }
 
   return (
