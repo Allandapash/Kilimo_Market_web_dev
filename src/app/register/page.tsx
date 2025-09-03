@@ -47,7 +47,7 @@ export default function RegisterPage() {
     // In a real app, you would handle user registration here.
     toast({
       title: "Registration Successful!",
-      description: "Your account has been created.",
+      description: "Your account has been created. Redirecting...",
     });
 
     if (data.role === 'Farmer') {
