@@ -36,17 +36,20 @@ export function Header() {
   const router = useRouter();
   const { cartItems } = useCart();
   const { user, logout } = useAuth();
+  const [navItems, setNavItems] = useState(baseNavItems);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    if (user) {
+        const userRole = user.role as keyof typeof roleNavItems;
+        const additionalItems = roleNavItems[userRole] || [];
+        setNavItems([...baseNavItems, ...additionalItems]);
+    } else {
+        setNavItems(baseNavItems);
+    }
+  }, [user]);
   
-  const navItems = isClient && user 
-    ? [...baseNavItems, ...(roleNavItems[user.role as keyof typeof roleNavItems] || [])]
-    : baseNavItems;
-
-
   const handleLogout = () => {
     logout();
     router.push('/');
