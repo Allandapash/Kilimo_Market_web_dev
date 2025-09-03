@@ -39,17 +39,23 @@ export default function LoginPage() {
 
   function onSubmit(data: LoginFormValues) {
     console.log(data);
-    // In a real app, you'd authenticate the user here.
-    // For now, we'll just show a success message and redirect.
+    // In a real app, you'd authenticate the user here and get their role.
+    // For now, we'll simulate the role based on the email address for demonstration.
+    
+    // If the email contains 'farmer', we simulate a farmer logging in.
+    const isFarmer = data.email.toLowerCase().includes('farmer');
+
     toast({
       title: "Logged In Successfully!",
-      description: "Welcome back to AgriLink.",
+      description: `Welcome back! Redirecting you to your ${isFarmer ? 'farmer' : 'buyer'} dashboard.`,
     });
     
-    // Mock role-based redirect. In a real app, you'd get the role from your auth system.
-    if (data.email.includes('farmer')) {
+    // Redirect based on the simulated role.
+    if (isFarmer) {
+        // Farmers go to the page to list their items.
         router.push('/sell');
     } else {
+        // Buyers and other roles go to the main dashboard to see all items.
         router.push('/dashboard');
     }
 
@@ -73,7 +79,7 @@ export default function LoginPage() {
                         <FormItem>
                             <FormLabel>Email Address</FormLabel>
                             <FormControl>
-                            <Input type="email" placeholder="john.doe@example.com" {...field} />
+                            <Input type="email" placeholder="farmer@example.com or buyer@example.com" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
