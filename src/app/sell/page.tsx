@@ -19,9 +19,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import ImageUploader from '@/components/image-uploader';
 import { useRouter } from 'next/navigation';
-import { addProduceListing } from '@/lib/data';
 import { verifyListing, type VerifyListingOutput } from '@/ai/flows/verify-listing';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { handleAddProduce } from './actions';
 
 const sellFormSchema = z.object({
   name: z.string().min(3, { message: "Produce name must be at least 3 characters." }),
@@ -43,6 +43,7 @@ export default function SellPage() {
   const [isClient, setIsClient] = useState(false);
   const [step, setStep] = useState(1); // 1 for form, 2 for verification
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [verificationResult, setVerificationResult] = useState<VerifyListingOutput | null>(null);
 
   useEffect(() => {
@@ -90,14 +91,26 @@ export default function SellPage() {
   }
 
   async function onFinalSubmit(data: SellFormValues) {
-    await addProduceListing(data);
-    toast({
-      title: 'Listing Submitted!',
-      description: `Your listing for ${data.name} has been created and is now visible on the dashboard.`,
-      variant: 'default',
-    });
-    form.reset();
-    router.push('/dashboard');
+    setIsSubmitting(true);
+    try {
+        await handleAddProduce(data);
+        toast({
+          title: 'Listing Submitted!',
+          description: `Your listing for ${data.name} has been created and is now visible on the dashboard.`,
+          variant: 'default',
+        });
+        form.reset();
+        router.push('/dashboard');
+    } catch (e) {
+        toast({
+            variant: 'destructive',
+            title: 'Submission Failed',
+            description: 'Could not create the listing. Please try again.'
+        });
+        console.error(e);
+    } finally {
+        setIsSubmitting(false);
+    }
   }
 
   const VerificationIcon = ({ isValid }: { isValid: boolean }) => (
@@ -133,11 +146,11 @@ export default function SellPage() {
                     </Alert>
 
                     <div className="flex gap-4 pt-4">
-                        <Button variant="outline" onClick={() => setStep(1)}>
+                        <Button variant="outline" onClick={() => setStep(1)} disabled={isSubmitting}>
                             <ArrowLeft /> Go Back & Edit
                         </Button>
-                        <Button onClick={form.handleSubmit(onFinalSubmit)}>
-                            Create Listing Anyway <ArrowRight />
+                        <Button onClick={form.handleSubmit(onFinalSubmit)} disabled={isSubmitting}>
+                            {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...</> : <>Create Listing Anyway <ArrowRight /></>}
                         </Button>
                     </div>
                 </CardContent>
