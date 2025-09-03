@@ -39,15 +39,14 @@ export default function LoginPage() {
 
   function onSubmit(data: LoginFormValues) {
     console.log(data);
-    // In a real app, you'd authenticate the user here and get their role.
-    // For now, we'll simulate the role based on the email address for demonstration.
+    // In a real app, you'd authenticate the user here.
+    // We'll simulate the role based on the email address for demonstration.
     
-    // If the email contains 'farmer', we simulate a farmer logging in.
     const isFarmer = data.email.toLowerCase().includes('farmer');
 
     toast({
       title: "Logged In Successfully!",
-      description: `Welcome back! Redirecting you to your ${isFarmer ? 'farmer' : 'buyer'} dashboard.`,
+      description: `Welcome back! Redirecting you to your ${isFarmer ? 'farmer dashboard' : 'dashboard'}.`,
     });
     
     // Redirect based on the simulated role.
