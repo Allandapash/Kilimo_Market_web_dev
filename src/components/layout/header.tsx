@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -48,19 +49,19 @@ export function Header() {
   const NavLinks = ({ className }: { className?: string }) => (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
       {navItems.map((item) => {
-        if (!isClient && item.roles) {
-          return null;
+        // Hide role-specific links on the server or if the role doesn't match
+        if (item.roles && (!isClient || !user || !item.roles.includes(user.role))) {
+            return null;
         }
 
-        if (item.roles) {
-          if (!user || !item.roles.includes(user.role)) {
+        // A non-farmer should not see the "Sell" link, even if not logged in initially
+        if (item.href === '/sell' && isClient && user?.role !== 'Farmer') {
             return null;
-          }
         }
-        
-        // Simplified logic for Sell/Orders link visibility based on roles
-        if ((item.href === '/sell' && user?.role !== 'Farmer') || (item.href === '/orders' && user?.role === 'Farmer')) {
-          if (user) return null;
+
+        // A farmer should not see the "My Orders" link
+        if (item.href === '/orders' && isClient && user?.role === 'Farmer') {
+            return null;
         }
 
         return (
