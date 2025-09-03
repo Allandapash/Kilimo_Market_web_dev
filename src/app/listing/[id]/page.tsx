@@ -67,7 +67,7 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
               </div>
               <Separator className="my-4" />
               <Button size="lg" className="w-full text-base bg-accent text-accent-foreground hover:bg-accent/90">
-                <ShoppingCart className="mr-2 h-5 w-5" /> Place Order
+                <ShoppingCart className="mr-2 h-5 w-5" /> Buy Produce
               </Button>
             </CardContent>
           </Card>
