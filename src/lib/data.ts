@@ -137,7 +137,7 @@ export async function addProduceListing(listing: Omit<Produce, 'id' | 'location'
         id: newId,
         location: { lat: 34.0522 + (Math.random() - 0.5) * 0.5, lng: -118.2437 + (Math.random() - 0.5) * 0.5 },
         aiHint: listing.name.toLowerCase(),
-        image: listing.image || `https://picsum.photos/seed/${listing.name.split(" ").join("-")}/600/400`,
+        image: listing.image || `https://picsum.photos/seed/${listing.name.split(" ").join("-").toLowerCase()}/600/400`,
     };
     
     const newListings = [newListing, ...currentListings];
