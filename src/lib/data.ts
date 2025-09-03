@@ -95,13 +95,16 @@ const initialListings: Produce[] = [
 ];
 
 // Initialize the listings data. In development, this preserves the data across hot reloads.
-if (process.env.NODE_ENV !== 'production') {
-    if (!global.__listings) {
-        global.__listings = [...initialListings];
-    }
-}
+let listings: Produce[];
 
-const listings = process.env.NODE_ENV === 'production' ? [...initialListings] : global.__listings!;
+if (process.env.NODE_ENV === 'production') {
+  listings = [...initialListings];
+} else {
+  if (!global.__listings) {
+    global.__listings = [...initialListings];
+  }
+  listings = global.__listings;
+}
 
 
 export async function getProduceListings(): Promise<Produce[]> {
