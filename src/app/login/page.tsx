@@ -18,6 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { LogIn } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth-context";
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email." }),
@@ -29,6 +30,7 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 export default function LoginPage() {
   const { toast } = useToast();
   const router = useRouter();
+  const { login } = useAuth();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -38,23 +40,22 @@ export default function LoginPage() {
   });
 
   function onSubmit(data: LoginFormValues) {
-    console.log(data);
-    // In a real app, you'd authenticate the user here.
-    // We'll simulate the role based on the email address for demonstration.
-    
     const isFarmer = data.email.toLowerCase().includes('farmer');
+    const role = isFarmer ? 'Farmer' : 'Buyer';
+    
+    // In a real app, you would get the user's name from your backend
+    const name = data.email.split('@')[0];
+
+    login({ name, role });
 
     toast({
       title: "Logged In Successfully!",
-      description: `Welcome back! Redirecting you to your ${isFarmer ? 'farmer dashboard' : 'dashboard'}.`,
+      description: `Welcome back, ${name}! Redirecting you...`,
     });
     
-    // Redirect based on the simulated role.
-    if (isFarmer) {
-        // Farmers go to the page to list their items.
+    if (role === 'Farmer') {
         router.push('/sell');
     } else {
-        // Buyers and other roles go to the main dashboard to see all items.
         router.push('/dashboard');
     }
 
