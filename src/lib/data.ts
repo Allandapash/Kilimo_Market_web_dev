@@ -2,7 +2,7 @@
 import type { Produce } from './types';
 
 // This is a mock database. In a real app, you'd use a proper database.
-// We make it a global to persist data across requests in a dev environment.
+// We use a global variable to persist data across requests in a dev environment.
 declare global {
   var __listings: Produce[] | undefined;
 }
@@ -94,19 +94,24 @@ const initialListings: Produce[] = [
   }
 ];
 
-// In production, always start with the initial list.
-// In development, use the global object to persist the list across reloads.
-const listings = global.__listings || (global.__listings = [...initialListings]);
+// Initialize the listings data. In development, this preserves the data across hot reloads.
+if (process.env.NODE_ENV !== 'production') {
+    if (!global.__listings) {
+        global.__listings = [...initialListings];
+    }
+}
+
+const listings = process.env.NODE_ENV === 'production' ? [...initialListings] : global.__listings!;
 
 
 export async function getProduceListings(): Promise<Produce[]> {
   // Simulate a database call. We return a copy to prevent direct mutation.
-  return new Promise(resolve => setTimeout(() => resolve([...listings]), 100));
+  return new Promise(resolve => setTimeout(() => resolve([...listings]), 50));
 }
 
 export async function getProduceListingById(id: string): Promise<Produce | undefined> {
   // Simulate a database call
-  return new Promise(resolve => setTimeout(() => resolve(listings.find(item => item.id === id)), 100));
+  return new Promise(resolve => setTimeout(() => resolve(listings.find(item => item.id === id)), 50));
 }
 
 export async function addProduceListing(listing: Omit<Produce, 'id' | 'location' | 'aiHint'>) {
