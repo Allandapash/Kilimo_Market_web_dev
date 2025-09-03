@@ -2,7 +2,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/cart-context';
+import { useOrders } from '@/context/order-context';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -12,16 +14,21 @@ import { useToast } from '@/hooks/use-toast';
 
 export default function CartPage() {
     const { cartItems, removeItem, updateItemQuantity, clearCart } = useCart();
+    const { addOrder } = useOrders();
+    const router = useRouter();
     const { toast } = useToast();
 
     const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.orderQuantity, 0);
 
     const handlePlaceOrder = () => {
+        addOrder(cartItems, subtotal);
         toast({
             title: "Order Placed!",
-            description: "Thank you for your purchase. Your items will be on their way shortly."
+            description: "Thank you for your purchase. You can monitor your order in the 'My Orders' page.",
+            action: <Button onClick={() => router.push('/orders')}>View Orders</Button>
         });
         clearCart();
+        router.push('/orders');
     }
 
     if (cartItems.length === 0) {

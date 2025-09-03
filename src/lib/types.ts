@@ -21,3 +21,10 @@ export interface Produce {
 export interface CartItem extends Produce {
     orderQuantity: number;
 }
+
+export interface Order {
+  id: string;
+  items: CartItem[];
+  total: number;
+  orderDate: Date;
+}

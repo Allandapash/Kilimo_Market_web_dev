@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Leaf, Bell, Menu, ShoppingCart } from 'lucide-react';
+import { Leaf, Bell, Menu, ShoppingCart, Package } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -12,11 +12,10 @@ import { Badge } from '../ui/badge';
 
 const navItems = [
   { href: '/', label: 'Home' },
-  { href: '/dashboard', label: 'Dashboard' },
-  { href: '/sell', label: 'Sell Produce' },
-  { href: '/trends', label: 'Market Trends' },
-  { href: '/about', label: 'About Us' },
-  { href: '/contact', label: 'Contact Us' },
+  { href: '/dashboard', label: 'Browse' },
+  { href: '/sell', label: 'Sell' },
+  { href: '/orders', label: 'My Orders' },
+  { href: '/trends', label: 'Trends' },
 ];
 
 export function Header() {
