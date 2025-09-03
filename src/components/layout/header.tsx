@@ -12,7 +12,7 @@ import { Badge } from '../ui/badge';
 
 const navItems = [
   { href: '/', label: 'Home' },
-  { href: '/dashboard', label: 'Browse' },
+  { href: '/dashboard', label: 'Dashboard' },
   { href: '/sell', label: 'Sell' },
   { href: '/orders', label: 'My Orders' },
   { href: '/trends', label: 'Trends' },
