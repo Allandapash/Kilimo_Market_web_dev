@@ -1,6 +1,8 @@
 import BrowsePage from '@/components/browse-page';
 import { getProduceListings } from '@/lib/data';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
   const listings = await getProduceListings();
   
