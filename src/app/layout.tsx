@@ -4,7 +4,7 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/layout/header';
 import { Toaster } from '@/components/ui/toaster';
-import { MapProvider } from '@/components/map-provider';
+import { CartProvider } from '@/context/cart-context';
 
 const ptSans = PT_Sans({
   subsets: ['latin'],
@@ -35,11 +35,13 @@ export default function RootLayout({
           ptSans.variable
         )}
       >
-        <div className="relative flex min-h-screen flex-col">
-          <Header />
-          <main className="flex-1">{children}</main>
-        </div>
-        <Toaster />
+        <CartProvider>
+          <div className="relative flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-1">{children}</main>
+          </div>
+          <Toaster />
+        </CartProvider>
       </body>
     </html>
   );

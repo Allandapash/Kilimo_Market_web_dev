@@ -1,19 +1,62 @@
+"use client";
+
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { getProduceListingById } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { MapPin, Calendar, Scale, ShoppingCart } from 'lucide-react';
+import { MapPin, Calendar, Scale, ShoppingCart, Minus, Plus } from 'lucide-react';
 import { format } from 'date-fns';
 import { ListingMap } from '@/components/listing-map';
+import { useCart } from '@/context/cart-context';
+import { useEffect, useState } from 'react';
+import type { Produce } from '@/lib/types';
+import { useToast } from '@/hooks/use-toast';
+import { Input } from '@/components/ui/input';
 
-export default async function ListingDetailPage({ params }: { params: { id: string } }) {
-  const listing = await getProduceListingById(params.id);
+export default function ListingDetailPage({ params }: { params: { id: string } }) {
+  const [listing, setListing] = useState<Produce | null>(null);
+  const [quantity, setQuantity] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { addItem } = useCart();
+  const { toast } = useToast();
+  const router = useRouter();
+
+  useEffect(() => {
+    async function fetchListing() {
+      const fetchedListing = await getProduceListingById(params.id);
+      if (fetchedListing) {
+        setListing(fetchedListing);
+      }
+      setIsLoading(false);
+    }
+    fetchListing();
+  }, [params.id]);
+
+  if (isLoading) {
+    return <div className="container mx-auto text-center py-12">Loading...</div>
+  }
 
   if (!listing) {
     notFound();
+  }
+  
+  const handleAddToCart = () => {
+    if (quantity > 0) {
+      addItem(listing, quantity);
+      toast({
+        title: "Item Added to Cart",
+        description: `${quantity} ${listing.unit} of ${listing.name} added.`,
+        action: <Button onClick={() => router.push('/cart')}>View Cart</Button>
+      })
+    }
+  }
+  
+  const handleQuantityChange = (amount: number) => {
+    setQuantity(prev => Math.max(1, Math.min(listing.quantity, prev + amount)));
   }
 
   return (
@@ -66,8 +109,27 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
                 </div>
               </div>
               <Separator className="my-4" />
-              <Button size="lg" className="w-full text-base bg-accent text-accent-foreground hover:bg-accent/90">
-                <ShoppingCart className="mr-2 h-5 w-5" /> Buy Produce
+                <div className="flex items-center gap-4 mb-4">
+                  <label className="font-medium">Quantity:</label>
+                  <div className="flex items-center border rounded-md">
+                    <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(-1)} className="h-10 w-10">
+                      <Minus className="h-4 w-4" />
+                    </Button>
+                    <Input 
+                      type="number"
+                      className="w-16 h-10 text-center border-x-0 rounded-none focus-visible:ring-0"
+                      value={quantity}
+                      onChange={(e) => setQuantity(Math.max(1, Math.min(listing.quantity, Number(e.target.value))))}
+                      min="1"
+                      max={listing.quantity}
+                    />
+                    <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(1)} className="h-10 w-10">
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              <Button size="lg" className="w-full text-base bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleAddToCart}>
+                <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
               </Button>
             </CardContent>
           </Card>

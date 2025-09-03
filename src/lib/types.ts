@@ -17,3 +17,7 @@ export interface Produce {
   image: string;
   aiHint: string;
 }
+
+export interface CartItem extends Produce {
+    orderQuantity: number;
+}

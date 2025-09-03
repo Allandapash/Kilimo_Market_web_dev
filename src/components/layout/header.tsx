@@ -2,19 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Leaf, Bell, CircleUser, Menu, ShoppingCart } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { Leaf, Bell, Menu, ShoppingCart } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useCart } from '@/context/cart-context';
+import { Badge } from '../ui/badge';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -27,6 +21,9 @@ const navItems = [
 
 export function Header() {
   const pathname = usePathname();
+  const { cartItems } = useCart();
+
+  const cartItemCount = cartItems.reduce((sum, item) => sum + item.orderQuantity, 0);
 
   const NavLinks = ({ className }: { className?: string }) => (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
@@ -93,9 +90,14 @@ export function Header() {
             <Bell className="h-5 w-5" />
             <span className="sr-only">Notifications</span>
           </Button>
-          <Button variant="ghost" size="icon">
-            <ShoppingCart className="h-5 w-5" />
-            <span className="sr-only">Cart</span>
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/cart">
+                <ShoppingCart className="h-5 w-5" />
+                {cartItemCount > 0 && (
+                    <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 justify-center p-0">{cartItemCount}</Badge>
+                )}
+                <span className="sr-only">Cart</span>
+            </Link>
           </Button>
             <div className="hidden md:flex items-center gap-2">
                 <Button asChild variant="ghost">
