@@ -1,8 +1,6 @@
 
 import type { Produce } from './types';
 
-const today = new Date('2024-09-01T12:00:00Z');
-
 // This is a mock database. In a real app, you'd use a proper database.
 // We make it a global to persist data across requests in a dev environment.
 declare global {
@@ -98,15 +96,7 @@ const initialListings: Produce[] = [
 
 // In production, always start with the initial list.
 // In development, use the global object to persist the list across reloads.
-if (process.env.NODE_ENV !== 'production') {
-  if (!global.__listings) {
-    global.__listings = [...initialListings];
-  }
-}
-
-const listings = process.env.NODE_ENV === 'production' 
-  ? [...initialListings] 
-  : global.__listings!;
+const listings = global.__listings || (global.__listings = [...initialListings]);
 
 
 export async function getProduceListings(): Promise<Produce[]> {
@@ -120,7 +110,7 @@ export async function getProduceListingById(id: string): Promise<Produce | undef
 }
 
 export async function addProduceListing(listing: Omit<Produce, 'id' | 'location' | 'aiHint'>) {
-    const newId = (Math.max(...listings.map(l => parseInt(l.id))) + 1).toString();
+    const newId = (Math.max(0, ...listings.map(l => parseInt(l.id))) + 1).toString();
     const newListing: Produce = {
         ...listing,
         id: newId,
