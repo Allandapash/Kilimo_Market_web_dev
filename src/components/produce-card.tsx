@@ -1,3 +1,5 @@
+"use client";
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { MapPin, Calendar, Tag, ArrowRight } from 'lucide-react';
@@ -6,12 +8,20 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
+import { useState, useEffect } from 'react';
 
 interface ProduceCardProps {
   listing: Produce;
 }
 
 export function ProduceCard({ listing }: ProduceCardProps) {
+  const [formattedDate, setFormattedDate] = useState('');
+
+  useEffect(() => {
+    // This code runs only on the client, after hydration
+    setFormattedDate(format(listing.availability, 'MMM dd'));
+  }, [listing.availability]);
+
   return (
     <div className="group h-full w-full [perspective:1000px]">
       <div className="relative h-full w-full rounded-lg shadow-md transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
@@ -62,7 +72,7 @@ export function ProduceCard({ listing }: ProduceCardProps) {
                         </div>
                         <div className="flex items-center">
                             <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
-                            <span>From {format(listing.availability, 'MMM dd')}</span>
+                            <span>From {formattedDate || '...'}</span>
                         </div>
                     </div>
                 </CardContent>
