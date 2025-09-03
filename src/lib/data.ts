@@ -96,31 +96,34 @@ const initialListings: Produce[] = [
   }
 ];
 
-if (process.env.NODE_ENV === 'production') {
-  global.__listings = initialListings;
-} else {
+// In production, always start with the initial list.
+// In development, use the global object to persist the list across reloads.
+if (process.env.NODE_ENV !== 'production') {
   if (!global.__listings) {
-    global.__listings = initialListings;
+    global.__listings = [...initialListings];
   }
 }
 
-const listings = global.__listings!;
+const listings = process.env.NODE_ENV === 'production' 
+  ? [...initialListings] 
+  : global.__listings!;
 
 
 export async function getProduceListings(): Promise<Produce[]> {
-  // Simulate a database call
-  return new Promise(resolve => setTimeout(() => resolve(listings), 500));
+  // Simulate a database call. We return a copy to prevent direct mutation.
+  return new Promise(resolve => setTimeout(() => resolve([...listings]), 100));
 }
 
 export async function getProduceListingById(id: string): Promise<Produce | undefined> {
   // Simulate a database call
-  return new Promise(resolve => setTimeout(() => resolve(listings.find(item => item.id === id)), 300));
+  return new Promise(resolve => setTimeout(() => resolve(listings.find(item => item.id === id)), 100));
 }
 
 export async function addProduceListing(listing: Omit<Produce, 'id' | 'location' | 'aiHint'>) {
+    const newId = (Math.max(...listings.map(l => parseInt(l.id))) + 1).toString();
     const newListing: Produce = {
         ...listing,
-        id: (listings.length + 1).toString(),
+        id: newId,
         location: { lat: 34.0522 + (Math.random() - 0.5) * 0.5, lng: -118.2437 + (Math.random() - 0.5) * 0.5 }, // Randomize location slightly
         aiHint: listing.name.toLowerCase(),
         image: listing.image || `https://picsum.photos/seed/${listing.name.split(" ").join("-")}/600/400`,
