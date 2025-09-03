@@ -14,12 +14,14 @@ import { useState } from 'react';
 import type { Produce } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
+import { useAuth, UserRole } from '@/context/auth-context';
 
 export default function ListingClientPage({ listing }: { listing: Produce }) {
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCart();
   const { toast } = useToast();
   const router = useRouter();
+  const { user } = useAuth();
   
   const handleAddToCart = () => {
     if (quantity > 0) {
@@ -86,28 +88,32 @@ export default function ListingClientPage({ listing }: { listing: Produce }) {
                 </div>
               </div>
               <Separator className="my-4" />
-                <div className="flex items-center gap-4 mb-4">
-                  <label className="font-medium">Quantity:</label>
-                  <div className="flex items-center border rounded-md">
-                    <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(-1)} className="h-10 w-10">
-                      <Minus className="h-4 w-4" />
-                    </Button>
-                    <Input 
-                      type="number"
-                      className="w-16 h-10 text-center border-x-0 rounded-none focus-visible:ring-0"
-                      value={quantity}
-                      onChange={(e) => setQuantity(Math.max(1, Math.min(listing.quantity, Number(e.target.value))))}
-                      min="1"
-                      max={listing.quantity}
-                    />
-                    <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(1)} className="h-10 w-10">
-                      <Plus className="h-4 w-4" />
-                    </Button>
+              {user?.role === UserRole.Buyer && (
+                <>
+                  <div className="flex items-center gap-4 mb-4">
+                    <label className="font-medium">Quantity:</label>
+                    <div className="flex items-center border rounded-md">
+                      <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(-1)} className="h-10 w-10">
+                        <Minus className="h-4 w-4" />
+                      </Button>
+                      <Input 
+                        type="number"
+                        className="w-16 h-10 text-center border-x-0 rounded-none focus-visible:ring-0"
+                        value={quantity}
+                        onChange={(e) => setQuantity(Math.max(1, Math.min(listing.quantity, Number(e.target.value))))}
+                        min="1"
+                        max={listing.quantity}
+                      />
+                      <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(1)} className="h-10 w-10">
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              <Button size="lg" className="w-full text-base bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleAddToCart}>
-                <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
-              </Button>
+                  <Button size="lg" className="w-full text-base bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleAddToCart}>
+                    <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
+                  </Button>
+                </>
+              )}
             </CardContent>
           </Card>
         </div>

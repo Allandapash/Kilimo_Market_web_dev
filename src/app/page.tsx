@@ -1,9 +1,15 @@
+
+"use client";
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { Leaf } from 'lucide-react';
+import { useAuth, UserRole } from '@/context/auth-context';
 
 export default function Home() {
+  const { user, isMounted } = useAuth();
+
   return (
     <div className="flex flex-col min-h-[calc(100vh-3.5rem)]">
       <section className="relative w-full h-[60vh] md:h-[70vh] flex items-center justify-center text-center text-white">
@@ -27,9 +33,11 @@ export default function Home() {
             <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
               <Link href="/dashboard">Browse Listings</Link>
             </Button>
-            <Button asChild size="lg" variant="secondary">
-              <Link href="/sell">Sell Your Produce</Link>
-            </Button>
+            {isMounted && user?.role === UserRole.Farmer && (
+                <Button asChild size="lg" variant="secondary">
+                    <Link href="/sell">Sell Your Produce</Link>
+                </Button>
+            )}
           </div>
         </div>
       </section>
