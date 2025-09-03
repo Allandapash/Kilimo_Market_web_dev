@@ -20,13 +20,16 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useEffect, useState } from 'react';
 
-const navItems = [
+const baseNavItems = [
   { href: '/', label: 'Home' },
   { href: '/dashboard', label: 'Dashboard' },
-  { href: '/sell', label: 'Sell', roles: ['Farmer'] },
-  { href: '/orders', label: 'My Orders', roles: ['Buyer'] },
   { href: '/trends', label: 'Trends' },
 ];
+
+const roleNavItems = {
+    'Farmer': [{ href: '/sell', label: 'Sell' }],
+    'Buyer': [{ href: '/orders', label: 'My Orders' }],
+}
 
 export function Header() {
   const pathname = usePathname();
@@ -46,25 +49,17 @@ export function Header() {
     router.push('/');
   };
 
+  const getNavItems = () => {
+    if (!isClient || !user) {
+        return baseNavItems;
+    }
+    const userRoleItems = roleNavItems[user.role as keyof typeof roleNavItems] || [];
+    return [...baseNavItems, ...userRoleItems];
+  }
+
   const NavLinks = ({ className }: { className?: string }) => (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
-      {navItems.map((item) => {
-        // Hide role-specific links on the server or if the role doesn't match
-        if (item.roles && (!isClient || !user || !item.roles.includes(user.role))) {
-            return null;
-        }
-
-        // A non-farmer should not see the "Sell" link, even if not logged in initially
-        if (item.href === '/sell' && isClient && user?.role !== 'Farmer') {
-            return null;
-        }
-
-        // A farmer should not see the "My Orders" link
-        if (item.href === '/orders' && isClient && user?.role === 'Farmer') {
-            return null;
-        }
-
-        return (
+      {getNavItems().map((item) => (
           <Link
             key={item.href}
             href={item.href}
@@ -76,7 +71,7 @@ export function Header() {
             {item.label}
           </Link>
         )
-      })}
+      )}
     </nav>
   );
 
