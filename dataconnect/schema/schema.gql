@@ -1,0 +1,65 @@
+type User @table {
+  displayName: String!
+  email: String!
+  userType: String!
+  createdAt: Timestamp!
+  photoUrl: String
+  phoneNumber: String
+  address: String
+}
+
+type Farm @table {
+  name: String!
+  description: String!
+  location: String!
+  createdAt: Timestamp!
+  owner: User
+  website: String
+  contactEmail: String
+  deliveryOptions: String
+  farmPractices: String
+}
+
+type Product @table {
+  name: String!
+  description: String!
+  price: Float!
+  unit: String!
+  createdAt: Timestamp!
+  farm: Farm
+  category: String
+  imageUrl: String
+  availableQuantity: Int
+  inSeason: Boolean
+}
+
+type Order @table {
+  orderDate: Timestamp!
+  totalAmount: Float!
+  status: String!
+  createdAt: Timestamp!
+  updatedAt: Timestamp
+  buyer: User
+  deliveryAddress: String
+  notes: String
+}
+
+type OrderItem @table(key: ["order", "product"]) {
+  quantity: Int!
+  pricePerUnit: Float!
+  createdAt: Timestamp!
+  order: Order!
+  product: Product!
+  farm: Farm!
+  notes: String
+}
+
+type Review @table {
+  rating: Int!
+  createdAt: Timestamp!
+  reviewer: User
+  farm: Farm
+  product: Product
+  comment: String
+  updatedAt: Timestamp
+}

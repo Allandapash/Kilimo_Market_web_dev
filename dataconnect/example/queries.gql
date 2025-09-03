@@ -1,0 +1,29 @@
+mutation CreateUser @auth(level: PUBLIC) {
+  user_insert(data: {
+    displayName: "New User",
+    email: "newuser@example.com",
+    userType: "buyer"
+  })
+}
+
+query ListProducts @auth(level: PUBLIC) {
+  products {
+    id
+    name
+    description
+    price
+  }
+}
+
+mutation UpdateProduct($id: UUID!, $price: Float!) @auth(level: USER) {
+  product_update(key: {id: $id}, data: {price: $price})
+}
+
+query GetUserOrders($buyerId: UUID!) @auth(level: USER) {
+  orders(where: {buyerId: {eq: $buyerId}}) {
+    id
+    orderDate
+    totalAmount
+    status
+  }
+}

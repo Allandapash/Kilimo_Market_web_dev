@@ -42,4 +42,8 @@ next-env.d.ts
 
 # firebase
 firebase-debug.log
-firestore-debug.log
+firestore-debug.lognode_modules
+build
+dist
+.env
+firebase-debug.log

@@ -1,0 +1,35 @@
+mutation SeedDatabase @auth(level: USER) {
+  user_insertMany(data: [
+    {
+      displayName: "Alice Smith",
+      email: "alice@example.com",
+      userType: "buyer"
+    },
+    {
+      displayName: "Bob Farmowner",
+      email: "bob@examplefarm.com",
+      userType: "farmowner"
+    }
+  ])
+  farm_insertMany(data: [
+    {
+      name: "Bob's Organic Farm",
+      description: "We grow the best organic produce!",
+      location: "Someville, USA"
+    }
+  ])
+  product_insertMany(data: [
+    {
+      name: "Organic Apples",
+      description: "Crisp and delicious organic apples",
+      price: 1.99,
+      unit: "lb"
+    },
+        {
+      name: "Organic Eggs",
+      description: "Fresh and nutritious organic eggs",
+      price: 5.99,
+      unit: "dozen"
+    }
+  ])
+}
