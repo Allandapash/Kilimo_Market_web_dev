@@ -1,6 +1,6 @@
 import type { Produce } from './types';
 
-const today = new Date();
+const today = new Date('2024-09-01T12:00:00Z');
 
 // This is a mock database. In a real app, you'd use a proper database.
 // We make it a global to persist data across requests in a dev environment.
@@ -18,7 +18,7 @@ const initialListings: Produce[] = [
     price: 2.5,
     location: { lat: 34.0522, lng: -118.2437 },
     farmName: 'Sunset Farms',
-    availability: new Date(new Date().setDate(new Date().getDate() + 7)),
+    availability: new Date(new Date(today).setDate(today.getDate() + 7)),
     description: 'Freshly harvested organic carrots, full of flavor and nutrients. Perfect for roasting, salads, or juicing.',
     image: 'https://picsum.photos/seed/carrots/600/400',
     aiHint: 'organic carrots'
@@ -32,7 +32,7 @@ const initialListings: Produce[] = [
     price: 1.8,
     location: { lat: 34.1522, lng: -118.4437 },
     farmName: 'Orchard Valley',
-    availability: new Date(new Date().setDate(new Date().getDate() + 3)),
+    availability: new Date(new Date(today).setDate(today.getDate() + 3)),
     description: 'Crisp and sweet Gala apples, ideal for snacking, baking, and making applesauce.',
     image: 'https://picsum.photos/seed/apples/600/400',
     aiHint: 'gala apples'
@@ -46,7 +46,7 @@ const initialListings: Produce[] = [
     price: 4.0,
     location: { lat: 33.9522, lng: -118.3437 },
     farmName: 'Green Thumb Gardens',
-    availability: new Date(new Date().setDate(new Date().getDate() + 1)),
+    availability: new Date(new Date(today).setDate(today.getDate() + 1)),
     description: 'Juicy and flavorful heirloom tomatoes in a variety of colors and shapes. Taste the difference!',
     image: 'https://picsum.photos/seed/tomatoes/600/400',
     aiHint: 'heirloom tomatoes'
@@ -60,7 +60,7 @@ const initialListings: Produce[] = [
     price: 0.9,
     location: { lat: 34.0522, lng: -118.5437 },
     farmName: 'Golden Plains Grains',
-    availability: new Date(new Date().setDate(new Date().getDate() + 30)),
+    availability: new Date(new Date(today).setDate(today.getDate() + 30)),
     description: 'High-quality hard red wheat, perfect for milling your own flour. Excellent for breads and pasta.',
     image: 'https://picsum.photos/seed/wheat/600/400',
     aiHint: 'wheat grain'
@@ -74,7 +74,7 @@ const initialListings: Produce[] = [
     price: 0.75,
     location: { lat: 34.0822, lng: -118.1437 },
     farmName: 'Cornfield County',
-    availability: new Date(new Date().setDate(new Date().getDate() + 5)),
+    availability: new Date(new Date(today).setDate(today.getDate() + 5)),
     description: 'Tender and sweet corn on the cob. A summer classic for grilling or boiling.',
     image: 'https://picsum.photos/seed/corn/600/400',
     aiHint: 'sweet corn'
@@ -88,7 +88,7 @@ const initialListings: Produce[] = [
     price: 5.5,
     location: { lat: 33.8522, lng: -118.2037 },
     farmName: 'Berry Patch Farms',
-    availability: new Date(new Date().setDate(new Date().getDate() + 2)),
+    availability: new Date(new Date(today).setDate(today.getDate() + 2)),
     description: 'Plump, red, and juicy strawberries, picked at the peak of ripeness.',
     image: 'https://picsum.photos/seed/strawberries/600/400',
     aiHint: 'fresh strawberries'
