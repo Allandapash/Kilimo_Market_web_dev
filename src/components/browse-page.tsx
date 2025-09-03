@@ -20,10 +20,12 @@ export default function BrowsePage({ listings }: BrowsePageProps) {
 
   const filteredListings = useMemo(() => {
     return listings.filter(listing => {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase();
       const matchesSearch =
-        listing.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        listing.farmName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        listing.description.toLowerCase().includes(searchTerm.toLowerCase());
+        listing.name.toLowerCase().includes(lowerCaseSearchTerm) ||
+        listing.farmName.toLowerCase().includes(lowerCaseSearchTerm) ||
+        listing.description.toLowerCase().includes(lowerCaseSearchTerm) ||
+        listing.category.toLowerCase().includes(lowerCaseSearchTerm);
       
       const matchesCategory = category === 'All' || listing.category === category;
       
