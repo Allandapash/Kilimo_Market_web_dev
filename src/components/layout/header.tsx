@@ -74,6 +74,14 @@ export function Header() {
                         <span className="font-bold">AgriLink</span>
                     </Link>
                     <NavLinks className="flex-col !space-x-0 space-y-2 items-start" />
+                     <div className="mt-4 flex flex-col space-y-2">
+                        <Button asChild variant="outline">
+                            <Link href="/login">Login</Link>
+                        </Button>
+                        <Button asChild>
+                            <Link href="/register">Register</Link>
+                        </Button>
+                    </div>
                 </div>
             </SheetContent>
           </Sheet>
@@ -89,20 +97,14 @@ export function Header() {
             <ShoppingCart className="h-5 w-5" />
             <span className="sr-only">Cart</span>
           </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                    <CircleUser className="h-5 w-5" />
-                    <span className="sr-only">Profile</span>
+            <div className="hidden md:flex items-center gap-2">
+                <Button asChild variant="ghost">
+                    <Link href="/login">Login</Link>
                 </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild><Link href="/login">Login</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/register">Register</Link></DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <Button asChild>
+                    <Link href="/register">Register</Link>
+                </Button>
+            </div>
         </div>
       </div>
     </header>
