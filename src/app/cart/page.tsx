@@ -25,7 +25,6 @@ export default function CartPage() {
         toast({
             title: "Order Placed!",
             description: "Thank you for your purchase. You can monitor your order in the 'My Orders' page.",
-            action: <Button onClick={() => router.push('/orders')}>View Orders</Button>
         });
         clearCart();
         router.push('/orders');

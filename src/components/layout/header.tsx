@@ -29,7 +29,7 @@ const baseNavItems = [
 const roleNavItems = {
     'Farmer': [{ href: '/sell', label: 'Sell' }],
     'Buyer': [{ href: '/orders', label: 'My Orders' }],
-}
+};
 
 export function Header() {
   const pathname = usePathname();
@@ -41,25 +41,20 @@ export function Header() {
   useEffect(() => {
     setIsClient(true);
   }, []);
+  
+  const navItems = isClient && user 
+    ? [...baseNavItems, ...(roleNavItems[user.role as keyof typeof roleNavItems] || [])]
+    : baseNavItems;
 
-  const cartItemCount = cartItems.reduce((sum, item) => sum + item.orderQuantity, 0);
 
   const handleLogout = () => {
     logout();
     router.push('/');
   };
 
-  const getNavItems = () => {
-    if (!isClient || !user) {
-        return baseNavItems;
-    }
-    const userRoleItems = roleNavItems[user.role as keyof typeof roleNavItems] || [];
-    return [...baseNavItems, ...userRoleItems];
-  }
-
   const NavLinks = ({ className }: { className?: string }) => (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
-      {getNavItems().map((item) => (
+      {navItems.map((item) => (
           <Link
             key={item.href}
             href={item.href}
@@ -132,13 +127,13 @@ export function Header() {
             <Bell className="h-5 w-5" />
             <span className="sr-only">Notifications</span>
           </Button>
-
+          
           {isClient && user?.role !== 'Farmer' && (
             <Button variant="ghost" size="icon" asChild>
               <Link href="/cart">
                   <ShoppingCart className="h-5 w-5" />
-                  {cartItemCount > 0 && (
-                      <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 justify-center p-0">{cartItemCount}</Badge>
+                  {cartItems.length > 0 && (
+                      <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 justify-center p-0">{cartItems.reduce((sum, item) => sum + item.orderQuantity, 0)}</Badge>
                   )}
                   <span className="sr-only">Cart</span>
               </Link>
