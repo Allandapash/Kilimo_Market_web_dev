@@ -95,38 +95,54 @@ const initialListings: Produce[] = [
 ];
 
 // Initialize the listings data. In development, this preserves the data across hot reloads.
-let listings: Produce[];
-
-if (process.env.NODE_ENV === 'production') {
-  listings = [...initialListings];
-} else {
+if (process.env.NODE_ENV !== 'production') {
   if (!global.__listings) {
     global.__listings = [...initialListings];
   }
-  listings = global.__listings;
 }
 
+const getListingsStore = () => {
+    if (process.env.NODE_ENV === 'production') {
+        // In production, you'd fetch from a real database.
+        // For this mock, we'll just use the initial list.
+        // A better mock would involve a more persistent store.
+        return [...initialListings];
+    }
+    return global.__listings!;
+}
+
+const setListingsStore = (newListings: Produce[]) => {
+    if (process.env.NODE_ENV !== 'production') {
+        global.__listings = newListings;
+    }
+    // In a real app, this would write to a database.
+}
 
 export async function getProduceListings(): Promise<Produce[]> {
-  // Simulate a database call. We return a copy to prevent direct mutation.
+  const listings = getListingsStore();
   return new Promise(resolve => setTimeout(() => resolve([...listings]), 50));
 }
 
 export async function getProduceListingById(id: string): Promise<Produce | undefined> {
-  // Simulate a database call
+  const listings = getListingsStore();
   return new Promise(resolve => setTimeout(() => resolve(listings.find(item => item.id === id)), 50));
 }
 
 export async function addProduceListing(listing: Omit<Produce, 'id' | 'location' | 'aiHint'>) {
-    const newId = (Math.max(0, ...listings.map(l => parseInt(l.id))) + 1).toString();
+    const currentListings = getListingsStore();
+    const newId = (Math.max(0, ...currentListings.map(l => parseInt(l.id))) + 1).toString();
+    
     const newListing: Produce = {
         ...listing,
         id: newId,
-        location: { lat: 34.0522 + (Math.random() - 0.5) * 0.5, lng: -118.2437 + (Math.random() - 0.5) * 0.5 }, // Randomize location slightly
+        location: { lat: 34.0522 + (Math.random() - 0.5) * 0.5, lng: -118.2437 + (Math.random() - 0.5) * 0.5 },
         aiHint: listing.name.toLowerCase(),
         image: listing.image || `https://picsum.photos/seed/${listing.name.split(" ").join("-")}/600/400`,
     };
-    listings.unshift(newListing); // Add to the beginning of the list
+    
+    const newListings = [newListing, ...currentListings];
+    setListingsStore(newListings);
+    
     return newListing;
 }
 
