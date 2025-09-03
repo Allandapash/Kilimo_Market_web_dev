@@ -45,12 +45,13 @@ export function Header() {
   }, []);
 
   const getNavItems = () => {
-    if (!user) {
-        return baseNavItems;
+    let allItems = [...baseNavItems];
+    if (user) {
+        const userRole = user.role as keyof typeof roleNavItems;
+        const additionalItems = roleNavItems[userRole] || [];
+        allItems = [...allItems, ...additionalItems];
     }
-    const userRole = user.role as keyof typeof roleNavItems;
-    const additionalItems = roleNavItems[userRole] || [];
-    return [...baseNavItems, ...additionalItems];
+    return allItems;
   }
 
   const handleLogout = () => {
