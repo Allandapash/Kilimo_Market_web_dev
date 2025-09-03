@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -11,23 +12,34 @@ import { Separator } from '@/components/ui/separator';
 import { Minus, Plus, ShoppingCart, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { useState } from 'react';
 
 export default function CartPage() {
     const { cartItems, removeItem, updateItemQuantity, clearCart } = useCart();
     const { addOrder } = useOrders();
     const router = useRouter();
     const { toast } = useToast();
+    const [isPaying, setIsPaying] = useState(false);
 
     const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.orderQuantity, 0);
+    const serviceFee = subtotal * 0.05;
+    const total = subtotal + serviceFee;
 
     const handlePlaceOrder = () => {
-        addOrder(cartItems, subtotal);
-        toast({
-            title: "Order Placed!",
-            description: "Thank you for your purchase. You can monitor your order in the 'My Orders' page.",
-        });
-        clearCart();
-        router.push('/orders');
+        setIsPaying(true);
+        // Simulate payment processing
+        setTimeout(() => {
+            addOrder(cartItems, subtotal);
+            toast({
+                title: "Order Placed!",
+                description: "Thank you for your purchase. You can monitor your order in the 'My Orders' page.",
+            });
+            clearCart();
+            router.push('/orders');
+            setIsPaying(false);
+        }, 1500);
     }
 
     if (cartItems.length === 0) {
@@ -93,8 +105,8 @@ export default function CartPage() {
                             <span className="font-semibold">${subtotal.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-muted-foreground">
-                            <span>Taxes</span>
-                            <span className="font-semibold">Calculated at checkout</span>
+                            <span>Service Fee (5%)</span>
+                            <span className="font-semibold">${serviceFee.toFixed(2)}</span>
                         </div>
                          <div className="flex justify-between text-muted-foreground">
                             <span>Shipping</span>
@@ -102,12 +114,49 @@ export default function CartPage() {
                         </div>
                         <Separator />
                          <div className="flex justify-between font-bold text-lg">
-                            <span>Estimated Total</span>
-                            <span>${subtotal.toFixed(2)}</span>
+                            <span>Total</span>
+                            <span>${total.toFixed(2)}</span>
                         </div>
                     </CardContent>
                     <CardFooter>
-                        <Button size="lg" className="w-full" onClick={handlePlaceOrder}>Place Order</Button>
+                         <Dialog>
+                            <DialogTrigger asChild>
+                                <Button size="lg" className="w-full">Proceed to Payment</Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px]">
+                                <DialogHeader>
+                                    <DialogTitle>Complete Your Order</DialogTitle>
+                                    <DialogDescription>
+                                        A 5% service fee is applied. Please complete the payment to place your order.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <div className="grid gap-4 py-4">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-muted-foreground">Subtotal</span>
+                                        <span className="font-semibold">${subtotal.toFixed(2)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-muted-foreground">Service Fee (5%)</span>
+                                        <span className="font-semibold">${serviceFee.toFixed(2)}</span>
+                                    </div>
+                                    <Separator />
+                                    <div className="flex justify-between items-center text-lg">
+                                        <span className="font-bold">Total to Pay</span>
+                                        <span className="font-bold text-primary">${total.toFixed(2)}</span>
+                                    </div>
+                                    <Separator />
+                                    <div className="space-y-2">
+                                        <Label htmlFor="phone">M-Pesa Phone Number</Label>
+                                        <Input id="phone" defaultValue="254700000000" />
+                                    </div>
+                                </div>
+                                <DialogFooter>
+                                    <Button onClick={handlePlaceOrder} className="w-full" disabled={isPaying}>
+                                        {isPaying ? 'Processing...' : `Pay $${total.toFixed(2)} via M-Pesa`}
+                                    </Button>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
                     </CardFooter>
                 </Card>
             </div>
