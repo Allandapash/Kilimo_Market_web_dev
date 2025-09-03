@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from 'next/link';
@@ -31,24 +30,31 @@ const roleNavItems = {
     'Buyer': [{ href: '/orders', label: 'My Orders' }],
 };
 
+type NavItem = { href: string; label: string };
+
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const { cartItems } = useCart();
   const { user, logout } = useAuth();
-  const [navItems, setNavItems] = useState(baseNavItems);
-  const [isClient, setIsClient] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  
+  const [navItems, setNavItems] = useState<NavItem[]>(baseNavItems);
 
   useEffect(() => {
-    setIsClient(true);
-    if (user) {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isMounted && user) {
         const userRole = user.role as keyof typeof roleNavItems;
         const additionalItems = roleNavItems[userRole] || [];
         setNavItems([...baseNavItems, ...additionalItems]);
     } else {
         setNavItems(baseNavItems);
     }
-  }, [user]);
+  }, [user, isMounted]);
+
   
   const handleLogout = () => {
     logout();
@@ -103,12 +109,12 @@ export function Header() {
                     </Link>
                     <NavLinks className="flex-col !space-x-0 space-y-2 items-start" />
                      <div className="mt-4 flex flex-col space-y-2 border-t pt-4">
-                        {isClient && user ? (
+                        {isMounted && user ? (
                            <Button onClick={handleLogout}>
                               <LogOut className="mr-2 h-4 w-4" />
                               Logout
                             </Button>
-                        ) : isClient && (
+                        ) : isMounted && (
                           <>
                             <Button asChild variant="outline">
                                 <Link href="/login">Login</Link>
@@ -131,7 +137,7 @@ export function Header() {
             <span className="sr-only">Notifications</span>
           </Button>
           
-          {isClient && user?.role !== 'Farmer' && (
+          {isMounted && user?.role !== 'Farmer' && (
             <Button variant="ghost" size="icon" asChild>
               <Link href="/cart">
                   <ShoppingCart className="h-5 w-5" />
@@ -144,7 +150,7 @@ export function Header() {
           )}
 
           <div className="hidden md:flex items-center gap-2">
-            {isClient && user ? (
+            {isMounted && user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
@@ -167,7 +173,7 @@ export function Header() {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            ) : isClient && (
+            ) : isMounted && (
               <>
                 <Button asChild variant="ghost">
                     <Link href="/login">Login</Link>
