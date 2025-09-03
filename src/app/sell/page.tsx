@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, Upload } from 'lucide-react';
+import { Calendar as CalendarIcon, Upload, Bot, Loader2, CheckCircle2, AlertCircle, Sparkles, ArrowRight, ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -20,17 +20,19 @@ import { Textarea } from '@/components/ui/textarea';
 import ImageUploader from '@/components/image-uploader';
 import { useRouter } from 'next/navigation';
 import { addProduceListing } from '@/lib/data';
+import { verifyListing, type VerifyListingOutput } from '@/ai/flows/verify-listing';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 const sellFormSchema = z.object({
   name: z.string().min(3, { message: "Produce name must be at least 3 characters." }),
   category: z.enum(['Vegetable', 'Fruit', 'Grain', 'Legume', 'Meat', 'Dairy', 'Other']),
-  quantity: z.coerce.number().positive(),
+  quantity: z.coerce.number().positive({ message: "Quantity must be a positive number." }),
   unit: z.enum(['kg', 'lbs', 'item', 'bunch']),
-  price: z.coerce.number().positive(),
+  price: z.coerce.number().positive({ message: "Price must be a positive number." }),
   availability: z.date(),
   description: z.string().max(500).optional(),
-  farmName: z.string().min(2, { message: "Farm name is required."}),
-  image: z.string().optional(),
+  farmName: z.string().min(2, { message: "Farm name is required." }),
+  image: z.string().min(1, { message: "An image is required for verification." }),
 });
 
 type SellFormValues = z.infer<typeof sellFormSchema>;
@@ -39,6 +41,9 @@ export default function SellPage() {
   const { toast } = useToast();
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
+  const [step, setStep] = useState(1); // 1 for form, 2 for verification
+  const [isLoading, setIsLoading] = useState(false);
+  const [verificationResult, setVerificationResult] = useState<VerifyListingOutput | null>(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -57,9 +62,34 @@ export default function SellPage() {
       farmName: '',
       image: '',
     },
+    mode: 'onBlur',
   });
 
-  async function onSubmit(data: SellFormValues) {
+  const handleVerify = async (data: SellFormValues) => {
+    setIsLoading(true);
+    setVerificationResult(null);
+    try {
+      const result = await verifyListing({
+        name: data.name,
+        price: data.price,
+        unit: data.unit,
+        image: data.image!,
+      });
+      setVerificationResult(result);
+      setStep(2);
+    } catch (e) {
+      toast({
+        variant: 'destructive',
+        title: 'Verification Failed',
+        description: 'An error occurred while analyzing your listing. Please try again.'
+      });
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function onFinalSubmit(data: SellFormValues) {
     await addProduceListing(data);
     toast({
       title: 'Listing Submitted!',
@@ -70,16 +100,62 @@ export default function SellPage() {
     router.push('/dashboard');
   }
 
+  const VerificationIcon = ({ isValid }: { isValid: boolean }) => (
+    isValid
+      ? <CheckCircle2 className="h-5 w-5 text-green-500" />
+      : <AlertCircle className="h-5 w-5 text-destructive" />
+  );
+
+  if (step === 2 && verificationResult) {
+    return (
+        <div className="container mx-auto px-4 py-8">
+            <Card className="max-w-4xl mx-auto">
+                <CardHeader>
+                    <CardTitle className="font-headline text-3xl flex items-center gap-2"><Sparkles className="text-accent"/>AI Verification Result</CardTitle>
+                    <CardDescription>Our AI has analyzed your listing details. Review the feedback below.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <Alert variant={verificationResult.isImageValid ? 'default' : 'destructive'}>
+                        <VerificationIcon isValid={verificationResult.isImageValid} />
+                        <AlertTitle>Image Verification</AlertTitle>
+                        <AlertDescription>{verificationResult.imageReasoning}</AlertDescription>
+                    </Alert>
+
+                     <Alert variant={verificationResult.isPriceReasonable ? 'default' : 'destructive'}>
+                        <VerificationIcon isValid={verificationResult.isPriceReasonable} />
+                        <AlertTitle>Price Verification</AlertTitle>
+                        <AlertDescription>
+                            {verificationResult.priceReasoning}
+                            {verificationResult.suggestedPrice && (
+                                <span className="block mt-1">Suggested range: <b>{verificationResult.suggestedPrice}</b></span>
+                            )}
+                        </AlertDescription>
+                    </Alert>
+
+                    <div className="flex gap-4 pt-4">
+                        <Button variant="outline" onClick={() => setStep(1)}>
+                            <ArrowLeft /> Go Back & Edit
+                        </Button>
+                        <Button onClick={form.handleSubmit(onFinalSubmit)}>
+                            Create Listing Anyway <ArrowRight />
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Card className="max-w-4xl mx-auto">
         <CardHeader>
           <CardTitle className="font-headline text-3xl">Create a New Listing</CardTitle>
-          <CardDescription>Fill out the details below to list your produce on the marketplace.</CardDescription>
+          <CardDescription>Fill out the details below to list your produce. An AI will verify your image and price.</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(handleVerify)} className="space-y-8">
               <div className="grid md:grid-cols-2 gap-8">
                 <FormField name="name" control={form.control} render={({ field }) => (
                   <FormItem>
@@ -190,9 +266,18 @@ export default function SellPage() {
                   </FormItem>
                 )} />
               </div>
-              <Button type="submit" size="lg">
-                <Upload className="mr-2 h-5 w-5" />
-                Create Listing
+              <Button type="submit" size="lg" disabled={isLoading}>
+                 {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Analyzing...
+                    </>
+                  ) : (
+                    <>
+                      <Bot className="mr-2 h-5 w-5" />
+                      Verify with AI
+                    </>
+                  )}
               </Button>
             </form>
           </Form>
