@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { CartProvider } from '@/context/cart-context';
 import { OrderProvider } from '@/context/order-context';
 import { AuthProvider } from '@/context/auth-context';
+import { MapProvider } from '@/components/map-provider';
 
 const ptSans = PT_Sans({
   subsets: ['latin'],
@@ -40,11 +41,13 @@ export default function RootLayout({
         <AuthProvider>
           <OrderProvider>
             <CartProvider>
-              <div className="relative flex min-h-screen flex-col">
-                <Header />
-                <main className="flex-1">{children}</main>
-              </div>
-              <Toaster />
+              <MapProvider>
+                <div className="relative flex min-h-screen flex-col">
+                  <Header />
+                  <main className="flex-1">{children}</main>
+                </div>
+                <Toaster />
+              </MapProvider>
             </CartProvider>
           </OrderProvider>
         </AuthProvider>
