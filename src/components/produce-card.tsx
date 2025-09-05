@@ -16,8 +16,8 @@ interface ProduceCardProps {
 export function ProduceCard({ listing }: ProduceCardProps) {
   return (
     <Card className="flex flex-col h-full overflow-hidden transition-all hover:shadow-xl">
-      <div className="relative aspect-video w-full">
-        <Image
+       <CardHeader className="relative p-0 h-48 w-full">
+         <Image
           src={listing.image}
           alt={listing.name}
           fill
@@ -27,18 +27,16 @@ export function ProduceCard({ listing }: ProduceCardProps) {
         <Badge variant="secondary" className="absolute top-2 right-2">
           {listing.category}
         </Badge>
-      </div>
-      <CardHeader>
-        <CardTitle className="text-xl font-headline">{listing.name}</CardTitle>
       </CardHeader>
-      <CardContent className="flex-grow">
+      <CardContent className="p-4 flex-grow">
+        <CardTitle className="text-xl font-headline mb-2">{listing.name}</CardTitle>
         <p className="text-sm text-muted-foreground">{listing.quantity} {listing.unit} available</p>
         <p className="text-2xl font-bold text-primary mt-2">
-          ${listing.price.toFixed(2)}
+          Ksh {listing.price.toFixed(2)}
           <span className="text-sm font-normal text-muted-foreground"> / {listing.unit}</span>
         </p>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="p-4 pt-0">
         <Button asChild className="w-full">
           <Link href={`/listing/${listing.id}`}>
             View Listing <ArrowRight className="ml-2 h-4 w-4" />

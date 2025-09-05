@@ -16,6 +16,7 @@ export interface Produce {
   description: string;
   image: string;
   aiHint: string;
+  region: string;
 }
 
 export interface CartItem extends Produce {

@@ -14,27 +14,29 @@ const initialListings: Produce[] = [
     category: 'Vegetable',
     quantity: 100,
     unit: 'kg',
-    price: 2.5,
-    location: { lat: 34.0522, lng: -118.2437 },
+    price: 150,
+    location: { lat: -1.286389, lng: 36.817223 }, // Nairobi
     farmName: 'Sunset Farms',
     availability: new Date('2024-09-08T12:00:00Z'),
     description: 'Freshly harvested organic carrots, full of flavor and nutrients. Perfect for roasting, salads, or juicing.',
-    image: 'https://picsum.photos/seed/carrots/600/400',
-    aiHint: 'organic carrots'
+    image: 'https://picsum.photos/seed/organic-carrots/600/400',
+    aiHint: 'organic carrots',
+    region: 'Nairobi',
   },
   {
     id: '2',
     name: 'Gala Apples',
     category: 'Fruit',
     quantity: 250,
-    unit: 'lbs',
-    price: 1.8,
-    location: { lat: 34.1522, lng: -118.4437 },
+    unit: 'kg',
+    price: 220,
+    location: { lat: 0.5143, lng: 35.2699 }, // Eldoret
     farmName: 'Orchard Valley',
     availability: new Date('2024-09-04T12:00:00Z'),
     description: 'Crisp and sweet Gala apples, ideal for snacking, baking, and making applesauce.',
-    image: 'https://picsum.photos/seed/apples/600/400',
-    aiHint: 'gala apples'
+    image: 'https://picsum.photos/seed/gala-apples/600/400',
+    aiHint: 'gala apples',
+    region: 'Uasin Gishu',
   },
   {
     id: '3',
@@ -42,27 +44,29 @@ const initialListings: Produce[] = [
     category: 'Vegetable',
     quantity: 75,
     unit: 'kg',
-    price: 4.0,
-    location: { lat: 33.9522, lng: -118.3437 },
+    price: 250,
+    location: { lat: -0.1022, lng: 34.7617 }, // Kisumu
     farmName: 'Green Thumb Gardens',
     availability: new Date('2024-09-02T12:00:00Z'),
     description: 'Juicy and flavorful heirloom tomatoes in a variety of colors and shapes. Taste the difference!',
-    image: 'https://picsum.photos/seed/tomatoes/600/400',
-    aiHint: 'heirloom tomatoes'
+    image: 'https://picsum.photos/seed/heirloom-tomatoes/600/400',
+    aiHint: 'heirloom tomatoes',
+    region: 'Kisumu',
   },
   {
     id: '4',
     name: 'Hard Red Wheat',
     category: 'Grain',
     quantity: 500,
-    unit: 'lbs',
-    price: 0.9,
-    location: { lat: 34.0522, lng: -118.5437 },
+    unit: 'kg',
+    price: 80,
+    location: { lat: -0.2827, lng: 36.0711 }, // Nakuru
     farmName: 'Golden Plains Grains',
     availability: new Date('2024-10-01T12:00:00Z'),
     description: 'High-quality hard red wheat, perfect for milling your own flour. Excellent for breads and pasta.',
-    image: 'https://picsum.photos/seed/wheat/600/400',
-    aiHint: 'wheat grain'
+    image: 'https://picsum.photos/seed/red-wheat/600/400',
+    aiHint: 'wheat grain',
+    region: 'Nakuru',
   },
   {
     id: '5',
@@ -70,27 +74,29 @@ const initialListings: Produce[] = [
     category: 'Vegetable',
     quantity: 300,
     unit: 'item',
-    price: 0.75,
-    location: { lat: 34.0822, lng: -118.1437 },
+    price: 50,
+    location: { lat: -1.0927, lng: 37.0121 }, // Thika
     farmName: 'Cornfield County',
     availability: new Date('2024-09-06T12:00:00Z'),
     description: 'Tender and sweet corn on the cob. A summer classic for grilling or boiling.',
-    image: 'https://picsum.photos/seed/corn/600/400',
-    aiHint: 'sweet corn'
+    image: 'https://picsum.photos/seed/sweet-corn/600/400',
+    aiHint: 'sweet corn',
+    region: 'Kiambu',
   },
   {
     id: '6',
     name: 'Fresh Strawberries',
     category: 'Fruit',
     quantity: 50,
-    unit: 'lbs',
-    price: 5.5,
-    location: { lat: 33.8522, lng: -118.2037 },
+    unit: 'kg',
+    price: 450,
+    location: { lat: -0.424, lng: 36.9416 }, // Nyeri
     farmName: 'Berry Patch Farms',
     availability: new Date('2024-09-03T12:00:00Z'),
     description: 'Plump, red, and juicy strawberries, picked at the peak of ripeness.',
-    image: 'https://picsum.photos/seed/strawberries/600/400',
-    aiHint: 'fresh strawberries'
+    image: 'https://picsum.photos/seed/fresh-strawberries/600/400',
+    aiHint: 'fresh strawberries',
+    region: 'Nyeri',
   }
 ];
 
@@ -103,9 +109,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 const getListingsStore = () => {
     if (process.env.NODE_ENV === 'production') {
-        // In production, you'd fetch from a real database.
-        // For this mock, we'll just use the initial list.
-        // A better mock would involve a more persistent store.
         return [...initialListings];
     }
     return global.__listings!;
@@ -132,10 +135,24 @@ export async function addProduceListing(listing: Omit<Produce, 'id' | 'location'
     const currentListings = getListingsStore();
     const newId = (Math.max(0, ...currentListings.map(l => parseInt(l.id))) + 1).toString();
     
+    // Simple mapping of region to approximate coordinates
+    const regionCoordinates: Record<string, {lat: number, lng: number}> = {
+        'Nairobi': { lat: -1.286389, lng: 36.817223 },
+        'Mombasa': { lat: -4.0435, lng: 39.6682 },
+        'Kisumu': { lat: -0.1022, lng: 34.7617 },
+        'Nakuru': { lat: -0.2827, lng: 36.0711 },
+        'Eldoret': { lat: 0.5143, lng: 35.2699 },
+        'Uasin Gishu': { lat: 0.5143, lng: 35.2699 },
+        'Kiambu': { lat: -1.1726, lng: 36.8306 },
+        'Nyeri': { lat: -0.424, lng: 36.9416 },
+    };
+
+    const baseLocation = regionCoordinates[listing.region] || { lat: -1.28, lng: 36.81 };
+
     const newListing: Produce = {
         ...listing,
         id: newId,
-        location: { lat: 34.0522 + (Math.random() - 0.5) * 0.5, lng: -118.2437 + (Math.random() - 0.5) * 0.5 },
+        location: { lat: baseLocation.lat + (Math.random() - 0.5) * 0.1, lng: baseLocation.lng + (Math.random() - 0.5) * 0.1 },
         aiHint: listing.name.toLowerCase(),
         image: listing.image || `https://picsum.photos/seed/${listing.name.split(" ").join("-").toLowerCase()}/600/400`,
     };
@@ -147,3 +164,13 @@ export async function addProduceListing(listing: Omit<Produce, 'id' | 'location'
 }
 
 export const produceCategories = ['All', 'Vegetable', 'Fruit', 'Grain', 'Legume', 'Meat', 'Dairy', 'Other'];
+
+export const kenyanCounties = [
+  "Baringo", "Bomet", "Bungoma", "Busia", "Elgeyo-Marakwet", "Embu", "Garissa",
+  "Homa Bay", "Isiolo", "Kajiado", "Kakamega", "Kericho", "Kiambu", "Kilifi",
+  "Kirinyaga", "Kisii", "Kisumu", "Kitui", "Kwale", "Laikipia", "Lamu", "Machakos",
+  "Makueni", "Mandera", "Marsabit", "Meru", "Migori", "Mombasa", "Murang'a",
+  "Nairobi", "Nakuru", "Nandi", "Narok", "Nyamira", "Nyandarua", "Nyeri",
+  "Samburu", "Siaya", "Taita-Taveta", "Tana River", "Tharaka-Nithi",
+  "Trans Nzoia", "Turkana", "Uasin Gishu", "Vihiga", "Wajir", "West Pokot"
+];

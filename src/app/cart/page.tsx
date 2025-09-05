@@ -68,7 +68,7 @@ export default function CartPage() {
                         <div className="flex-grow">
                             <h3 className="font-semibold font-headline">{item.name}</h3>
                             <p className="text-sm text-muted-foreground">{item.farmName}</p>
-                            <p className="text-sm font-bold text-primary">${item.price.toFixed(2)} / {item.unit}</p>
+                            <p className="text-sm font-bold text-primary">Ksh {item.price.toFixed(2)} / {item.unit}</p>
                         </div>
                         <div className="flex items-center gap-2">
                              <div className="flex items-center border rounded-md">
@@ -102,11 +102,11 @@ export default function CartPage() {
                     <CardContent className="space-y-4">
                         <div className="flex justify-between">
                             <span>Subtotal</span>
-                            <span className="font-semibold">${subtotal.toFixed(2)}</span>
+                            <span className="font-semibold">Ksh {subtotal.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-muted-foreground">
                             <span>Service Fee (5%)</span>
-                            <span className="font-semibold">${serviceFee.toFixed(2)}</span>
+                            <span className="font-semibold">Ksh {serviceFee.toFixed(2)}</span>
                         </div>
                          <div className="flex justify-between text-muted-foreground">
                             <span>Shipping</span>
@@ -115,7 +115,7 @@ export default function CartPage() {
                         <Separator />
                          <div className="flex justify-between font-bold text-lg">
                             <span>Total</span>
-                            <span>${total.toFixed(2)}</span>
+                            <span>Ksh {total.toFixed(2)}</span>
                         </div>
                     </CardContent>
                     <CardFooter>
@@ -133,16 +133,16 @@ export default function CartPage() {
                                 <div className="grid gap-4 py-4">
                                     <div className="flex justify-between items-center">
                                         <span className="text-muted-foreground">Subtotal</span>
-                                        <span className="font-semibold">${subtotal.toFixed(2)}</span>
+                                        <span className="font-semibold">Ksh {subtotal.toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <span className="text-muted-foreground">Service Fee (5%)</span>
-                                        <span className="font-semibold">${serviceFee.toFixed(2)}</span>
+                                        <span className="font-semibold">Ksh {serviceFee.toFixed(2)}</span>
                                     </div>
                                     <Separator />
                                     <div className="flex justify-between items-center text-lg">
                                         <span className="font-bold">Total to Pay</span>
-                                        <span className="font-bold text-primary">${total.toFixed(2)}</span>
+                                        <span className="font-bold text-primary">Ksh {total.toFixed(2)}</span>
                                     </div>
                                     <Separator />
                                     <div className="space-y-2">
@@ -152,7 +152,7 @@ export default function CartPage() {
                                 </div>
                                 <DialogFooter>
                                     <Button onClick={handlePlaceOrder} className="w-full" disabled={isPaying}>
-                                        {isPaying ? 'Processing...' : `Pay $${total.toFixed(2)} via M-Pesa`}
+                                        {isPaying ? 'Processing...' : `Pay Ksh ${total.toFixed(2)} via M-Pesa`}
                                     </Button>
                                 </DialogFooter>
                             </DialogContent>

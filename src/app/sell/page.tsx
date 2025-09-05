@@ -22,6 +22,7 @@ import { useRouter } from 'next/navigation';
 import { verifyListing, type VerifyListingOutput } from '@/ai/flows/verify-listing';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { handleAddProduce } from './actions';
+import { kenyanCounties } from '@/lib/data';
 
 const sellFormSchema = z.object({
   name: z.string().min(3, { message: "Produce name must be at least 3 characters." }),
@@ -33,6 +34,7 @@ const sellFormSchema = z.object({
   description: z.string().max(500).optional(),
   farmName: z.string().min(2, { message: "Farm name is required." }),
   image: z.string().min(1, { message: "An image is required for verification." }),
+  region: z.string().min(1, { message: "Please select your region."}),
 });
 
 type SellFormValues = z.infer<typeof sellFormSchema>;
@@ -62,6 +64,7 @@ export default function SellPage() {
       description: '',
       farmName: '',
       image: '',
+      region: '',
     },
     mode: 'onBlur',
   });
@@ -75,6 +78,7 @@ export default function SellPage() {
         price: data.price,
         unit: data.unit,
         image: data.image!,
+        region: data.region,
       });
       setVerificationResult(result);
       setStep(2);
@@ -164,7 +168,7 @@ export default function SellPage() {
       <Card className="max-w-4xl mx-auto">
         <CardHeader>
           <CardTitle className="font-headline text-3xl">Create a New Listing</CardTitle>
-          <CardDescription>Fill out the details below to list your produce. An AI will verify your image and price.</CardDescription>
+          <CardDescription>Fill out the details below to list your produce. An AI will verify your image and price based on your region.</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -224,8 +228,8 @@ export default function SellPage() {
 
                 <FormField name="price" control={form.control} render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Price (per unit)</FormLabel>
-                    <FormControl><Input type="number" step="0.01" placeholder="2.50" {...field} /></FormControl>
+                    <FormLabel>Price (per unit, in Ksh)</FormLabel>
+                    <FormControl><Input type="number" step="0.01" placeholder="150.00" {...field} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )} />
@@ -249,6 +253,21 @@ export default function SellPage() {
                     <FormMessage />
                   </FormItem>
                 )} />
+                
+                <FormField name="region" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Region/County</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl><SelectTrigger><SelectValue placeholder="Select your region" /></SelectTrigger></FormControl>
+                        <SelectContent>
+                          {kenyanCounties.map(county => (
+                            <SelectItem key={county} value={county}>{county}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
 
                 <FormField name="farmName" control={form.control} render={({ field }) => (
                   <FormItem>

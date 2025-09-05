@@ -7,7 +7,7 @@ import { useOrders } from "@/context/order-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Package, PackageOpen } from "lucide-react";
+import { PackageOpen } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 export default function OrdersPage() {
@@ -43,7 +43,7 @@ export default function OrdersPage() {
                                         <p className="text-sm text-muted-foreground">{format(order.orderDate, 'MMMM dd, yyyy')}</p>
                                     </div>
                                     <div className="text-right">
-                                        <p className="font-bold text-lg text-primary">${order.total.toFixed(2)}</p>
+                                        <p className="font-bold text-lg text-primary">Ksh {order.total.toFixed(2)}</p>
                                         <p className="text-sm text-muted-foreground">{order.items.length} item(s)</p>
                                     </div>
                                 </div>
@@ -60,10 +60,10 @@ export default function OrdersPage() {
                                             </div>
                                             <div>
                                                 <p className="font-medium">{item.name}</p>
-                                                <p className="text-muted-foreground">{item.orderQuantity} {item.unit} &times; ${item.price.toFixed(2)}</p>
+                                                <p className="text-muted-foreground">{item.orderQuantity} {item.unit} &times; Ksh {item.price.toFixed(2)}</p>
                                             </div>
                                         </div>
-                                        <p className="font-medium">${(item.orderQuantity * item.price).toFixed(2)}</p>
+                                        <p className="font-medium">Ksh {(item.orderQuantity * item.price).toFixed(2)}</p>
                                     </div>
                                 ))}
                                 </div>

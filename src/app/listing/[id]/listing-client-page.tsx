@@ -68,7 +68,7 @@ export default function ListingClientPage({ listing }: { listing: Produce }) {
             </CardHeader>
             <CardContent>
               <p className="text-3xl font-bold text-primary mb-4">
-                ${listing.price.toFixed(2)}
+                Ksh {listing.price.toFixed(2)}
                 <span className="text-base font-normal text-muted-foreground"> / {listing.unit}</span>
               </p>
               <p className="text-foreground/90 font-body mb-6">{listing.description}</p>

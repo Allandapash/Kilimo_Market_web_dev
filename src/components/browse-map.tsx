@@ -18,9 +18,9 @@ export default function BrowseMap({ listings }: BrowseMapProps) {
   if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY === 'YOUR_API_KEY_HERE') {
     return (
         <Card className="h-[60vh] flex items-center justify-center">
-            <CardContent className="text-center">
+            <CardContent className="text-center p-6">
                 <p className="text-destructive font-semibold">Map is not available.</p>
-                <p className="text-muted-foreground">Google Maps API key is missing or invalid.</p>
+                <p className="text-muted-foreground text-sm">Google Maps API key is missing or invalid.</p>
                 <p className="text-xs text-muted-foreground mt-2">Please add your key to the .env.local file.</p>
             </CardContent>
         </Card>
@@ -31,8 +31,8 @@ export default function BrowseMap({ listings }: BrowseMapProps) {
     <Card>
       <div className="h-[60vh] w-full">
         <Map
-          defaultCenter={{ lat: 34.0522, lng: -118.2437 }}
-          defaultZoom={9}
+          defaultCenter={{ lat: -1.286389, lng: 36.817223 }} // Centered on Nairobi
+          defaultZoom={6}
           gestureHandling={'greedy'}
           disableDefaultUI={true}
           mapId={'agrilink-map'}
@@ -63,7 +63,7 @@ export default function BrowseMap({ listings }: BrowseMapProps) {
                 </div>
                 <h3 className="font-bold font-headline text-md">{selected.name}</h3>
                 <p className="text-sm text-muted-foreground">{selected.farmName}</p>
-                <p className="text-lg font-bold text-primary my-1">${selected.price.toFixed(2)} / {selected.unit}</p>
+                <p className="text-lg font-bold text-primary my-1">Ksh {selected.price.toFixed(2)} / {selected.unit}</p>
                 <Button asChild size="sm" className="w-full mt-2">
                   <Link href={`/listing/${selected.id}`}>View Details</Link>
                 </Button>
