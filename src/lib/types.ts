@@ -1,3 +1,4 @@
+
 import type { StaticImageData } from "next/image";
 
 export interface Produce {
@@ -27,5 +28,5 @@ export interface Order {
   id: string;
   items: CartItem[];
   total: number;
-  orderDate: Date;
+  orderDate: string; // Stored as ISO string
 }

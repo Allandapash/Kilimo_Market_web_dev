@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -7,11 +8,50 @@ import { useOrders } from "@/context/order-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { PackageOpen } from "lucide-react";
+import { PackageOpen, Download } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import type { Order } from "@/lib/types";
 
 export default function OrdersPage() {
     const { orders } = useOrders();
+
+    const generateReceipt = (order: Order): string => {
+        let receipt = `========================================\n`;
+        receipt += `         AgriLink Receipt\n`;
+        receipt += `========================================\n\n`;
+        receipt += `Order ID: ${order.id}\n`;
+        receipt += `Order Date: ${format(new Date(order.orderDate), 'MMMM dd, yyyy, h:mm a')}\n\n`;
+        receipt += `----------------------------------------\n`;
+        receipt += `  Items\n`;
+        receipt += `----------------------------------------\n\n`;
+
+        order.items.forEach(item => {
+            const itemTotal = (item.orderQuantity * item.price).toFixed(2);
+            receipt += `${item.name}\n`;
+            receipt += `  ${item.orderQuantity} ${item.unit} x Ksh ${item.price.toFixed(2)} .......... Ksh ${itemTotal}\n\n`;
+        });
+        
+        receipt += `----------------------------------------\n`;
+        receipt += `Total: Ksh ${order.total.toFixed(2)}\n`;
+        receipt += `----------------------------------------\n\n`;
+        receipt += `Thank you for your purchase!\n`;
+        
+        return receipt;
+    };
+
+    const handleDownloadReceipt = (order: Order) => {
+        const receiptContent = generateReceipt(order);
+        const blob = new Blob([receiptContent], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `AgriLink-Receipt-${order.id}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
 
     if (orders.length === 0) {
         return (
@@ -40,7 +80,7 @@ export default function OrdersPage() {
                                 <div className="flex justify-between w-full items-center">
                                     <div>
                                         <h3 className="font-semibold text-lg font-headline">Order #{order.id.slice(-6)}</h3>
-                                        <p className="text-sm text-muted-foreground">{format(order.orderDate, 'MMMM dd, yyyy')}</p>
+                                        <p className="text-sm text-muted-foreground">{format(new Date(order.orderDate), 'MMMM dd, yyyy')}</p>
                                     </div>
                                     <div className="text-right">
                                         <p className="font-bold text-lg text-primary">Ksh {order.total.toFixed(2)}</p>
@@ -51,7 +91,7 @@ export default function OrdersPage() {
                             <AccordionContent className="p-6 pt-0">
                                 <Separator className="mb-4" />
                                 <h4 className="font-semibold mb-2">Order Details:</h4>
-                                <div className="space-y-3">
+                                <div className="space-y-3 mb-6">
                                 {order.items.map(item => (
                                     <div key={item.id} className="flex justify-between items-center text-sm">
                                         <div className="flex items-center gap-3">
@@ -67,6 +107,10 @@ export default function OrdersPage() {
                                     </div>
                                 ))}
                                 </div>
+                                <Button onClick={() => handleDownloadReceipt(order)} variant="outline">
+                                    <Download className="mr-2 h-4 w-4" />
+                                    Download Receipt
+                                </Button>
                             </AccordionContent>
                          </Card>
                     </AccordionItem>
