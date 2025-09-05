@@ -15,12 +15,13 @@ interface BrowseMapProps {
 export default function BrowseMap({ listings }: BrowseMapProps) {
   const [selected, setSelected] = useState<Produce | null>(null);
 
-  if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
+  if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY === 'YOUR_API_KEY_HERE') {
     return (
         <Card className="h-[60vh] flex items-center justify-center">
             <CardContent className="text-center">
                 <p className="text-destructive font-semibold">Map is not available.</p>
-                <p className="text-muted-foreground">Google Maps API key is missing.</p>
+                <p className="text-muted-foreground">Google Maps API key is missing or invalid.</p>
+                <p className="text-xs text-muted-foreground mt-2">Please add your key to the .env.local file.</p>
             </CardContent>
         </Card>
     )

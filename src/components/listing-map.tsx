@@ -9,7 +9,16 @@ interface ListingMapProps {
 }
 
 export function ListingMap({ listing }: ListingMapProps) {
-    if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) return null;
+    if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY === 'YOUR_API_KEY_HERE') {
+        return (
+            <Card className="h-64 w-full overflow-hidden rounded-lg border flex items-center justify-center">
+                <CardContent className="text-center p-6">
+                     <p className="text-destructive font-semibold">Map is not available.</p>
+                     <p className="text-muted-foreground text-sm">Google Maps API key is missing or invalid.</p>
+                </CardContent>
+            </Card>
+        )
+    };
 
     return (
         <Card className="h-64 w-full overflow-hidden rounded-lg border flex items-center justify-center">
