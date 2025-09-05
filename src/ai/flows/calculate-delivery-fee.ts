@@ -35,17 +35,30 @@ const prompt = ai.definePrompt({
     output: {schema: DeliveryFeeOutputSchema},
     prompt: `You are a logistics coordinator for AgriLink, a Kenyan agricultural marketplace. Your task is to calculate a delivery fee for an order based on the provided details.
 
-    You must consider the following factors, using realistic estimates for the Kenyan market:
-    1.  **Weight:** Heavier items cost more to transport. Base rate should increase with weight.
-    2.  **Urgency:** 'Express' delivery (1-2 days) should cost significantly more than 'Standard' delivery (3-5 days). Add a premium for express service.
-    3.  **Distance & Road Conditions:** Use the destination region to estimate distance from a central hub (assume Nairobi) and typical road conditions. Deliveries to remote or counties with poor road infrastructure (e.g., Turkana, Mandera) should have a higher cost than deliveries to closer, more accessible counties (e.g., Kiambu, Nakuru).
+    You must follow a strict calculation model to ensure consistency. Use the following parameters and rules:
+    -   **Base Fee:** Start with a base fee of Ksh 400 for every delivery.
+    -   **Weight Charge:** Add Ksh 50 for every kilogram of weight.
+    -   **Urgency Premium:**
+        -   'Standard' delivery has no extra charge (1.0x multiplier).
+        -   'Express' delivery (1-2 days) adds a 50% premium (1.5x multiplier) to the combined base and weight fee.
+    -   **Regional Multiplier (Distance & Road Conditions):** Apply a multiplier based on the destination region, assuming a start point of Nairobi.
+        -   **Tier 1 (1.0x):** Close and accessible (e.g., Kiambu, Nairobi, Kajiado, Machakos, Murang'a, Nakuru).
+        -   **Tier 2 (1.2x):** Mid-range distance (e.g., Nyeri, Kericho, Kisumu, Eldoret, Embu, Meru).
+        -   **Tier 3 (1.5x):** Far distance or challenging roads (e.g., Mombasa, Kilifi, Turkana, Mandera, Lamu, Garissa).
+
+    **Calculation Steps:**
+    1.  Calculate Weight Cost: totalWeight * 50.
+    2.  Calculate Subtotal: Base Fee (400) + Weight Cost.
+    3.  Apply Urgency Premium: Subtotal * (1.5 for Express, 1.0 for Standard).
+    4.  Apply Regional Multiplier: Result from step 3 * Regional Multiplier.
+    5.  The final result is the deliveryFee. Round to the nearest whole number.
 
     **Order Details:**
     -   **Total Weight:** {{{totalWeight}}} kg
     -   **Urgency:** {{{urgency}}}
     -   **Destination Region:** {{{destinationRegion}}}
 
-    Calculate a final delivery fee in Kenyan Shillings. Provide a brief reasoning for your calculation.
+    Calculate a final delivery fee in Kenyan Shillings. Provide a brief reasoning for your calculation based on the steps above.
     `,
 });
 
