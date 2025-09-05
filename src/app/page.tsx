@@ -18,7 +18,7 @@ export default function Home() {
           alt="Hero background showing a lush farm"
           fill
           className="object-cover"
-          data-ai-hint="lush farm"
+          data-ai-hint="kenyan farm"
           priority
         />
         <div className="absolute inset-0 bg-black/50" />

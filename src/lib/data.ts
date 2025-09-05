@@ -19,8 +19,8 @@ const initialListings: Produce[] = [
     farmName: 'Sunset Farms',
     availability: new Date('2024-09-08T12:00:00Z'),
     description: 'Freshly harvested organic carrots, full of flavor and nutrients. Perfect for roasting, salads, or juicing.',
-    image: 'https://picsum.photos/seed/organic-carrots/600/400',
-    aiHint: 'organic carrots',
+    image: 'https://picsum.photos/seed/carrots/600/400',
+    aiHint: 'fresh carrots',
     region: 'Nairobi',
   },
   {
@@ -34,8 +34,8 @@ const initialListings: Produce[] = [
     farmName: 'Orchard Valley',
     availability: new Date('2024-09-04T12:00:00Z'),
     description: 'Crisp and sweet Gala apples, ideal for snacking, baking, and making applesauce.',
-    image: 'https://picsum.photos/seed/gala-apples/600/400',
-    aiHint: 'gala apples',
+    image: 'https://picsum.photos/seed/apples/600/400',
+    aiHint: 'red apples',
     region: 'Uasin Gishu',
   },
   {
@@ -49,8 +49,8 @@ const initialListings: Produce[] = [
     farmName: 'Green Thumb Gardens',
     availability: new Date('2024-09-02T12:00:00Z'),
     description: 'Juicy and flavorful heirloom tomatoes in a variety of colors and shapes. Taste the difference!',
-    image: 'https://picsum.photos/seed/heirloom-tomatoes/600/400',
-    aiHint: 'heirloom tomatoes',
+    image: 'https://picsum.photos/seed/tomatoes/600/400',
+    aiHint: 'fresh tomatoes',
     region: 'Kisumu',
   },
   {
@@ -64,8 +64,8 @@ const initialListings: Produce[] = [
     farmName: 'Golden Plains Grains',
     availability: new Date('2024-10-01T12:00:00Z'),
     description: 'High-quality hard red wheat, perfect for milling your own flour. Excellent for breads and pasta.',
-    image: 'https://picsum.photos/seed/red-wheat/600/400',
-    aiHint: 'wheat grain',
+    image: 'https://picsum.photos/seed/wheat/600/400',
+    aiHint: 'wheat field',
     region: 'Nakuru',
   },
   {
@@ -79,8 +79,8 @@ const initialListings: Produce[] = [
     farmName: 'Cornfield County',
     availability: new Date('2024-09-06T12:00:00Z'),
     description: 'Tender and sweet corn on the cob. A summer classic for grilling or boiling.',
-    image: 'https://picsum.photos/seed/sweet-corn/600/400',
-    aiHint: 'sweet corn',
+    image: 'https://picsum.photos/seed/corn/600/400',
+    aiHint: 'corn cobs',
     region: 'Kiambu',
   },
   {
@@ -94,7 +94,7 @@ const initialListings: Produce[] = [
     farmName: 'Berry Patch Farms',
     availability: new Date('2024-09-03T12:00:00Z'),
     description: 'Plump, red, and juicy strawberries, picked at the peak of ripeness.',
-    image: 'https://picsum.photos/seed/fresh-strawberries/600/400',
+    image: 'https://picsum.photos/seed/strawberries/600/400',
     aiHint: 'fresh strawberries',
     region: 'Nyeri',
   }
