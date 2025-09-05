@@ -12,6 +12,7 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const DeliveryFeeInputSchema = z.object({
+  subtotal: z.number().describe('The subtotal of the order before any fees, in Kenyan Shillings (Ksh).'),
   totalWeight: z.number().describe('The total weight of the order in kilograms (kg).'),
   urgency: z.enum(['Standard', 'Express']).describe("The desired delivery speed. 'Standard' is 3-5 days, 'Express' is 1-2 days."),
   destinationRegion: z.string().describe('The destination county/region in Kenya where the order will be delivered.'),
@@ -35,6 +36,8 @@ const prompt = ai.definePrompt({
     output: {schema: DeliveryFeeOutputSchema},
     prompt: `You are a logistics coordinator for AgriLink, a Kenyan agricultural marketplace. Your task is to calculate a delivery fee for an order based on the provided details.
 
+    **IMPORTANT RULE:** The final delivery fee CANNOT be more than the order subtotal. If your calculated fee is higher than the subtotal, you must cap the delivery fee at the subtotal amount and mention in your reasoning that the fee was capped.
+
     You must follow a strict calculation model to ensure consistency. Use the following parameters and rules:
     -   **Base Fee:** Start with a base fee of Ksh 400 for every delivery.
     -   **Weight Charge:** Add Ksh 50 for every kilogram of weight.
@@ -49,11 +52,13 @@ const prompt = ai.definePrompt({
     **Calculation Steps:**
     1.  Calculate Weight Cost: totalWeight * 50.
     2.  Calculate Subtotal: Base Fee (400) + Weight Cost.
-    3.  Apply Urgency Premium: Subtotal * (1.5 for Express, 1.0 for Standard).
+    3.  Apply Urgency Premium: Result from step 2 * (1.5 for Express, 1.0 for Standard).
     4.  Apply Regional Multiplier: Result from step 3 * Regional Multiplier.
-    5.  The final result is the deliveryFee. Round to the nearest whole number.
+    5.  Check against subtotal: Compare the result from step 4 with the order subtotal. The final deliveryFee is the lower of the two values.
+    6.  Round the final result to the nearest whole number.
 
     **Order Details:**
+    -   **Order Subtotal:** Ksh {{{subtotal}}}
     -   **Total Weight:** {{{totalWeight}}} kg
     -   **Urgency:** {{{urgency}}}
     -   **Destination Region:** {{{destinationRegion}}}

@@ -52,6 +52,7 @@ export default function CartPage() {
         setDeliveryFee(null);
         try {
             const result = await calculateDeliveryFee({
+                subtotal: subtotal,
                 totalWeight,
                 urgency,
                 destinationRegion: deliveryRegion,
@@ -282,5 +283,3 @@ export default function CartPage() {
     </div>
   );
 }
-
-    
