@@ -6,35 +6,40 @@ import type { CartItem, Order } from '@/lib/types';
 
 interface OrderContextType {
   orders: Order[];
+  isMounted: boolean;
   addOrder: (items: CartItem[], total: number) => void;
 }
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
-const getInitialOrders = (): Order[] => {
-    if (typeof window === 'undefined') {
-        return [];
-    }
+export const OrderProvider = ({ children }: { children: ReactNode }) => {
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Load orders from localStorage on the client side after mount
+  useEffect(() => {
+    setIsMounted(true);
     try {
         const item = window.localStorage.getItem('agrilink-orders');
-        return item ? JSON.parse(item) : [];
+        if (item) {
+            setOrders(JSON.parse(item));
+        }
     } catch (error) {
         console.error("Failed to parse orders from local storage", error);
-        return [];
     }
-};
-
-
-export const OrderProvider = ({ children }: { children: ReactNode }) => {
-  const [orders, setOrders] = useState<Order[]>(getInitialOrders);
-
+  }, []);
+  
+  // Save orders to localStorage whenever they change
   useEffect(() => {
-    try {
-        window.localStorage.setItem('agrilink-orders', JSON.stringify(orders));
-    } catch (error) {
-        console.error("Failed to save orders to local storage", error);
+    // Only run this effect on the client and after initial mount
+    if (isMounted) {
+        try {
+            window.localStorage.setItem('agrilink-orders', JSON.stringify(orders));
+        } catch (error) {
+            console.error("Failed to save orders to local storage", error);
+        }
     }
-  }, [orders]);
+  }, [orders, isMounted]);
 
 
   const addOrder = (items: CartItem[], total: number) => {
@@ -48,7 +53,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <OrderContext.Provider value={{ orders, addOrder }}>
+    <OrderContext.Provider value={{ orders, addOrder, isMounted }}>
       {children}
     </OrderContext.Provider>
   );

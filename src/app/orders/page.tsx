@@ -8,12 +8,12 @@ import { useOrders } from "@/context/order-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { PackageOpen, Download } from "lucide-react";
+import { PackageOpen, Download, Loader2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import type { Order } from "@/lib/types";
 
 export default function OrdersPage() {
-    const { orders } = useOrders();
+    const { orders, isMounted } = useOrders();
 
     const generateReceipt = (order: Order): string => {
         let receipt = `========================================\n`;
@@ -52,6 +52,14 @@ export default function OrdersPage() {
         URL.revokeObjectURL(url);
     };
 
+    if (!isMounted) {
+         return (
+            <div className="container mx-auto max-w-4xl px-4 py-12 text-center">
+                <Loader2 className="mx-auto h-12 w-12 animate-spin text-muted-foreground mb-4" />
+                <h1 className="text-xl font-bold font-headline mb-2">Loading Orders...</h1>
+            </div>
+        );
+    }
 
     if (orders.length === 0) {
         return (
