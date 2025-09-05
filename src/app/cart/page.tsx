@@ -9,7 +9,7 @@ import { useOrders } from '@/context/order-context';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Minus, Plus, ShoppingCart, Trash2, Loader2 } from 'lucide-react';
+import { Minus, Plus, ShoppingCart, Trash2, Loader2, AlertCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -62,7 +62,12 @@ export default function CartPage() {
                 description: result.reasoning,
             });
         } catch (e) {
-            setCalculationError("Could not calculate delivery fee. Please try again.");
+            const errorMessage = e instanceof Error ? e.message : String(e);
+            if (errorMessage.includes('503') || errorMessage.toLowerCase().includes('overloaded')) {
+                setCalculationError("The delivery calculation service is currently unavailable. Please try again in a moment.");
+            } else {
+                setCalculationError("Could not calculate delivery fee. Please try again.");
+            }
             console.error(e);
         } finally {
             setIsCalculatingFee(false);
@@ -146,6 +151,7 @@ export default function CartPage() {
                         <RadioGroup defaultValue="pickup" onValueChange={(value: DeliveryType) => {
                             setDeliveryType(value)
                             setDeliveryFee(null)
+                            setCalculationError(null)
                         }}>
                             <div className="flex items-center space-x-2">
                                 <RadioGroupItem value="pickup" id="pickup" />
@@ -186,7 +192,13 @@ export default function CartPage() {
                                     {isCalculatingFee ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : null}
                                     Calculate Delivery Fee
                                 </Button>
-                                {calculationError && <p className="text-sm text-destructive">{calculationError}</p>}
+                                {calculationError && (
+                                    <Alert variant="destructive" className="mt-4">
+                                        <AlertCircle className="h-4 w-4" />
+                                        <AlertTitle>Calculation Failed</AlertTitle>
+                                        <AlertDescription>{calculationError}</AlertDescription>
+                                    </Alert>
+                                )}
                             </div>
                         )}
                     </CardContent>
@@ -270,3 +282,5 @@ export default function CartPage() {
     </div>
   );
 }
+
+    
