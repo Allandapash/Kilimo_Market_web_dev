@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Bell, Menu, ShoppingCart, LogOut } from 'lucide-react';
+import { Bell, Menu, ShoppingCart, LogOut, Store } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -23,23 +23,27 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 const baseNavItems = [
   { href: '/', label: 'Home' },
-  { href: '/dashboard', label: 'Dashboard' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
 
+const sharedLoggedInItems = [
+    { href: '/marketplace', label: 'Marketplace' },
+];
+
 const buyerNavItems = [
+  { href: '/dashboard', label: 'Dashboard' },
   { href: '/orders', label: 'My Orders' },
 ];
 
 const farmerNavItems = [
+  { href: '/dashboard', label: 'Dashboard' },
   { href: '/sell', label: 'Sell' },
   { href: '/trends', label: 'Trends' },
 ];
 
 const transportProviderNavItems = [
-    // Placeholder for future logistics dashboard
-    // { href: '/logistics', label: 'Logistics' },
+    { href: '/dashboard', label: 'Dashboard' },
 ];
 
 
@@ -50,17 +54,18 @@ export function HeaderNav() {
 
   const getNavItems = () => {
     if (!user) {
-        return baseNavItems;
+        // Show marketplace for guests, but call it dashboard for simplicity
+        return [...baseNavItems, { href: '/marketplace', label: 'Dashboard' }];
     }
     switch (user.role) {
         case UserRole.Buyer:
-            return [...baseNavItems, ...buyerNavItems];
+            return [...baseNavItems, ...sharedLoggedInItems, ...buyerNavItems];
         case UserRole.Farmer:
-            return [...baseNavItems, ...farmerNavItems];
+            return [...baseNavItems, ...sharedLoggedInItems, ...farmerNavItems];
         case UserRole.TransportProvider:
-            return [...baseNavItems, ...transportProviderNavItems];
+            return [...baseNavItems, ...sharedLoggedInItems, ...transportProviderNavItems];
         default:
-            return baseNavItems;
+            return [...baseNavItems, { href: '/marketplace', label: 'Dashboard' }];
     }
   }
 
@@ -74,7 +79,7 @@ export function HeaderNav() {
                 href={item.href}
                 className={cn(
                 'text-sm font-medium transition-colors hover:text-primary',
-                (pathname === item.href || (pathname.startsWith('/listing') && item.href === '/dashboard') || (pathname.startsWith('/dashboard') && item.href === '/dashboard')) ? 'text-primary' : 'text-muted-foreground'
+                (pathname === item.href || (pathname.startsWith('/listing') && item.href === '/marketplace') || (pathname.startsWith('/marketplace') && item.href === '/marketplace') || (pathname.startsWith('/dashboard') && item.href === '/dashboard')) ? 'text-primary' : 'text-muted-foreground'
                 )}
             >
                 {item.label}

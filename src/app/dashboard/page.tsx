@@ -4,6 +4,7 @@ import { getProduceListings } from '@/lib/data';
 import { cookies } from 'next/headers';
 import FarmerDashboard from './farmer-dashboard';
 import { UserRole } from '@/context/auth-context';
+import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -24,16 +25,13 @@ function getUserRoleFromCookie(): UserRole | null {
 
 
 export default async function DashboardPage() {
-  const listings = await getProduceListings();
   const role = getUserRoleFromCookie();
 
+  // If user is a farmer, show their dedicated dashboard
   if (role === UserRole.Farmer) {
       return <FarmerDashboard />;
   }
   
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <BrowsePage listings={listings} />
-    </div>
-  );
+  // For any other logged in user (or guests), redirect them to the marketplace
+  redirect('/marketplace');
 }

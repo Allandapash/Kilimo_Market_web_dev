@@ -31,7 +31,7 @@ export default function Home() {
           </p>
           <div className="mt-8 flex justify-center gap-4">
             <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-              <Link href="/dashboard">Browse Listings</Link>
+              <Link href="/marketplace">Browse Listings</Link>
             </Button>
             {isMounted && user?.role === UserRole.Farmer && (
                 <Button asChild size="lg" variant="secondary">
