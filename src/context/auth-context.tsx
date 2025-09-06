@@ -37,13 +37,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     setIsMounted(true);
     try {
-        const storedUser = localStorage.getItem('agrilink-user');
+        const storedUser = localStorage.getItem('mavunolink-user');
         if (storedUser) {
             setUser(JSON.parse(storedUser));
         }
     } catch (error) {
         console.error("Failed to parse user from local storage", error);
-        localStorage.removeItem('agrilink-user');
+        localStorage.removeItem('mavunolink-user');
     }
   }, []);
 
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const foundUser = MOCK_USERS.find(u => u.email.toLowerCase() === email.toLowerCase());
             if (foundUser) { // In real app, you'd also check password hash
                 setUser(foundUser);
-                localStorage.setItem('agrilink-user', JSON.stringify(foundUser));
+                localStorage.setItem('mavunolink-user', JSON.stringify(foundUser));
                 resolve();
             } else {
                 reject(new Error('Invalid email or password.'));
@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('agrilink-user');
+    localStorage.removeItem('mavunolink-user');
   };
 
   return (

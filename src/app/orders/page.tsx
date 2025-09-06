@@ -17,7 +17,7 @@ export default function OrdersPage() {
 
     const generateReceipt = (order: Order): string => {
         let receipt = `========================================\n`;
-        receipt += `         AgriLink Receipt\n`;
+        receipt += `         MavunoLink Receipt\n`;
         receipt += `========================================\n\n`;
         receipt += `Order ID: ${order.id}\n`;
         receipt += `Order Date: ${format(new Date(order.orderDate), 'MMMM dd, yyyy, h:mm a')}\n\n`;
@@ -56,7 +56,7 @@ export default function OrdersPage() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `AgriLink-Receipt-${order.id}.txt`;
+        a.download = `MavunoLink-Receipt-${order.id}.txt`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);

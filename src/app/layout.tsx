@@ -16,7 +16,7 @@ const ptSans = PT_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'AgriLink Marketplace',
+  title: 'MavunoLink Marketplace',
   description: 'Connecting Farmers and Buyers Directly',
 };
 

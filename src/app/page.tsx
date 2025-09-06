@@ -27,7 +27,7 @@ export default function Home() {
             Connecting Farmers and Buyers
           </h1>
           <p className="mt-4 text-lg md:text-xl max-w-3xl mx-auto drop-shadow-md">
-            AgriLink is the premier marketplace for fresh, high-quality produce directly from the source. Discover, buy, and sell with confidence.
+            MavunoLink is the premier marketplace for fresh, high-quality produce directly from the source. Discover, buy, and sell with confidence.
           </p>
           <div className="mt-8 flex justify-center gap-4">
             <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
