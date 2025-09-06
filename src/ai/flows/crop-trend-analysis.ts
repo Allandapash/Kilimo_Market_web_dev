@@ -16,9 +16,16 @@ const CropTrendInputSchema = z.object({
 });
 export type CropTrendInput = z.infer<typeof CropTrendInputSchema>;
 
+const TrendDataPointSchema = z.object({
+  month: z.string().describe("The month for the data point (e.g., 'May', 'Jun')."),
+  price: z.number().describe('The average market price for that month.'),
+  type: z.enum(['historical', 'forecasted']).describe("Indicates if the data is historical or a future forecast."),
+});
+
 const CropTrendOutputSchema = z.object({
-  optimalListingTime: z.string().describe('The optimal time to list the crop to maximize profit, based on the analysis.'),
-  reasoning: z.string().describe('The reasoning behind the optimal listing time suggestion.'),
+  trendData: z.array(TrendDataPointSchema).describe('An array of 6 data points representing the price trend. It should include the last 3 months of historical data and a 3-month forecast.'),
+  analysis: z.string().describe('A detailed analysis of the market trend, explaining the factors influencing the price and providing a recommendation.'),
+  optimalListingTime: z.string().describe('A concise recommendation for the optimal time to list the crop to maximize profit.'),
 });
 export type CropTrendOutput = z.infer<typeof CropTrendOutputSchema>;
 
@@ -30,7 +37,9 @@ const prompt = ai.definePrompt({
   name: 'cropTrendAnalysisPrompt',
   input: {schema: CropTrendInputSchema},
   output: {schema: CropTrendOutputSchema},
-  prompt: `You are an expert agricultural market analyst with access to real-time global market data. Your task is to analyze the current market trends for a specific crop and suggest the optimal time for a farmer in Kenya to list it on the MavunoLink Africa platform to maximize their profit.
+  prompt: `You are an expert agricultural market analyst with access to real-time global market data. Your task is to analyze the current market trends for a specific crop for a farmer in Kenya.
+
+You must provide a 6-month price analysis: 3 months of historical data and a 3-month forecast. The prices should be represented as a normalized index where 100 is the baseline average price.
 
 Consider the following factors in your analysis:
 -   **Global Supply and Demand:** Major harvests, shortages, or gluts in key producing countries.
@@ -41,7 +50,8 @@ Consider the following factors in your analysis:
 
 **Crop to Analyze:** {{{crop}}}
 
-Based on a comprehensive analysis of the current world markets, what is the optimal time for a Kenyan farmer to list this crop? Provide your reasoning, citing the key factors that influenced your decision.`,
+Based on a comprehensive analysis, provide the structured data for the price trend and a detailed analysis explaining your reasoning. Conclude with a clear recommendation for the optimal listing time.
+`,
 });
 
 const analyzeCropTrendFlow = ai.defineFlow(
