@@ -14,11 +14,11 @@ export default function Home() {
     <div className="flex flex-col min-h-[calc(100vh-3.5rem)]">
       <section className="relative w-full h-[60vh] md:h-[70vh] flex items-center justify-center text-center text-white">
         <Image
-          src="https://picsum.photos/1920/1080?random=12"
-          alt="Hero background showing a vibrant agricultural market"
+          src="https://picsum.photos/1920/1080?random=15"
+          alt="Hero background showing a vibrant farmer's market stall with fresh produce"
           fill
           className="object-cover"
-          data-ai-hint="agriculture market"
+          data-ai-hint="farmers market"
           priority
         />
         <div className="absolute inset-0 bg-black/50" />
