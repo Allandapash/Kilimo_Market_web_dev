@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -21,7 +22,7 @@ export default function ListingClientPage({ listing }: { listing: Produce }) {
   const { addItem } = useCart();
   const { toast } = useToast();
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, isMounted } = useAuth();
   
   const handleAddToCart = () => {
     if (quantity > 0) {
@@ -88,7 +89,7 @@ export default function ListingClientPage({ listing }: { listing: Produce }) {
                 </div>
               </div>
               <Separator className="my-4" />
-              {user?.role === UserRole.Buyer && (
+              {isMounted && user?.role === UserRole.Buyer && (
                 <>
                   <div className="flex items-center gap-4 mb-4">
                     <label className="font-medium">Quantity:</label>
