@@ -7,7 +7,7 @@ import type { CartItem, Order } from '@/lib/types';
 interface OrderContextType {
   orders: Order[];
   isMounted: boolean;
-  addOrder: (items: CartItem[], total: number) => void;
+  addOrder: (items: CartItem[], total: number, serviceFee: number, deliveryFee: number | null) => void;
 }
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
@@ -42,12 +42,14 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
   }, [orders, isMounted]);
 
 
-  const addOrder = (items: CartItem[], total: number) => {
+  const addOrder = (items: CartItem[], total: number, serviceFee: number, deliveryFee: number | null) => {
     const newOrder: Order = {
       id: new Date().getTime().toString(), // Simple unique ID
       items,
       total,
       orderDate: new Date().toJSON(), // Store as string to be JSON serializable
+      serviceFee,
+      deliveryFee,
     };
     setOrders(prevOrders => [newOrder, ...prevOrders]);
   };

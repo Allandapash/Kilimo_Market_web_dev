@@ -29,4 +29,6 @@ export interface Order {
   items: CartItem[];
   total: number;
   orderDate: string; // Stored as ISO string
+  serviceFee: number;
+  deliveryFee: number | null;
 }

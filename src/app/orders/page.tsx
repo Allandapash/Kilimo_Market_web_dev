@@ -32,6 +32,17 @@ export default function OrdersPage() {
         });
         
         receipt += `----------------------------------------\n`;
+        const subtotal = order.items.reduce((sum, item) => sum + item.price * item.orderQuantity, 0);
+        receipt += `Subtotal: Ksh ${subtotal.toFixed(2)}\n`;
+
+        if (order.serviceFee) {
+            receipt += `Service Fee: Ksh ${order.serviceFee.toFixed(2)}\n`;
+        }
+        if (order.deliveryFee) {
+            receipt += `Delivery Fee: Ksh ${order.deliveryFee.toFixed(2)}\n`;
+        }
+
+        receipt += `----------------------------------------\n`;
         receipt += `Total: Ksh ${order.total.toFixed(2)}\n`;
         receipt += `----------------------------------------\n\n`;
         receipt += `Thank you for your purchase!\n`;

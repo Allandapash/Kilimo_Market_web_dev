@@ -78,7 +78,7 @@ export default function CartPage() {
     const handlePlaceOrder = () => {
         setIsPaying(true);
         setTimeout(() => {
-            addOrder(cartItems, total);
+            addOrder(cartItems, total, serviceFee, deliveryFee);
             toast({
                 title: "Order Placed!",
                 description: "Thank you for your purchase. You can monitor your order in the 'My Orders' page.",
