@@ -6,6 +6,7 @@ import { createContext, useContext, useState, ReactNode, useEffect } from 'react
 export enum UserRole {
     Buyer = 'buyer',
     Farmer = 'farmer',
+    TransportProvider = 'transport_provider',
 }
 
 interface User {
@@ -28,7 +29,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // Mock user database
 const MOCK_USERS: User[] = [
     { id: '1', name: 'Alice Buyer', email: 'buyer@test.com', role: UserRole.Buyer },
-    { id: '2', name: 'Bob Farmer', email: 'farmer@test.com', role: UserRole.Farmer }
+    { id: '2', name: 'Bob Farmer', email: 'farmer@test.com', role: UserRole.Farmer },
+    { id: '3', name: 'Charles Transporter', email: 'driver@test.com', role: UserRole.TransportProvider }
 ];
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {

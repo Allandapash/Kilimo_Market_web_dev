@@ -37,6 +37,11 @@ const farmerNavItems = [
   { href: '/trends', label: 'Trends' },
 ];
 
+const transportProviderNavItems = [
+    // Placeholder for future logistics dashboard
+    // { href: '/logistics', label: 'Logistics' },
+];
+
 
 export function HeaderNav() {
   const pathname = usePathname();
@@ -47,13 +52,16 @@ export function HeaderNav() {
     if (!user) {
         return baseNavItems;
     }
-    if (user.role === UserRole.Buyer) {
-        return [...baseNavItems, ...buyerNavItems];
+    switch (user.role) {
+        case UserRole.Buyer:
+            return [...baseNavItems, ...buyerNavItems];
+        case UserRole.Farmer:
+            return [...baseNavItems, ...farmerNavItems];
+        case UserRole.TransportProvider:
+            return [...baseNavItems, ...transportProviderNavItems];
+        default:
+            return baseNavItems;
     }
-    if (user.role === UserRole.Farmer) {
-        return [...baseNavItems, ...farmerNavItems];
-    }
-    return baseNavItems;
   }
 
   const NavLinks = ({ className }: { className?: string }) => {

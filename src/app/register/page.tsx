@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -24,7 +25,7 @@ const registerFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email." }),
   password: z.string().min(8, { message: "Password must be at least 8 characters." }),
-  role: z.enum([UserRole.Buyer, UserRole.Farmer], { required_error: "You must select a role." }),
+  role: z.enum([UserRole.Buyer, UserRole.Farmer, UserRole.TransportProvider], { required_error: "You must select a role." }),
 });
 
 type RegisterFormValues = z.infer<typeof registerFormSchema>;
@@ -124,6 +125,7 @@ export default function RegisterPage() {
                         <SelectContent>
                           <SelectItem value={UserRole.Buyer}>Buyer (Looking for produce)</SelectItem>
                           <SelectItem value={UserRole.Farmer}>Farmer (Looking to sell)</SelectItem>
+                          <SelectItem value={UserRole.TransportProvider}>Transport Provider</SelectItem>
                         </SelectContent>
                       </Select>
                     <FormMessage />
