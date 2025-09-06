@@ -1,5 +1,6 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Leaf } from "lucide-react";
+import { Info, Users, Tractor } from "lucide-react";
 
 export default function AboutPage() {
   return (
@@ -11,37 +12,55 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <Card className="mb-8">
+      <div className="grid md:grid-cols-2 gap-8">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Tractor className="text-primary" />
+              Our Mission
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 text-foreground/90">
+            <p>
+              To bridge the gap between the hardworking farmers who cultivate our food and the buyers who seek fresh, high-quality produce. We believe in the power of direct connections to create a transparent and efficient agricultural marketplace.
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="text-primary" />
+              Our Vision
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 text-foreground/90">
+            <p>
+              We envision a world where every farmer has the tools to thrive in a digital marketplace. We are committed to leveraging technology to provide valuable insights and create an intelligent and sustainable food supply chain for Africa.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+       <Card className="mt-8">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Leaf className="text-primary" />
-            Our Mission
+            <Info className="text-primary" />
+            Why Choose Us?
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-foreground/90">
-          <p>
-            At MavunoLink Africa, our mission is to bridge the gap between the hardworking farmers who cultivate our food and the buyers who seek fresh, high-quality produce. We believe in the power of direct connections to create a more transparent, efficient, and sustainable agricultural marketplace.
-          </p>
-          <p>
-            By removing unnecessary intermediaries, we empower farmers to get fair prices for their products and help buyers access the freshest goods directly from the source. Our platform is designed to be intuitive, powerful, and supportive of local economies.
-          </p>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Leaf className="text-primary" />
-            Our Vision
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4 text-foreground/90">
-          <p>
-            We envision a world where every farmer has the tools to thrive in a digital marketplace and every buyer has access to the story behind their food. We are committed to leveraging technology, like our AI-powered trend analysis, to provide valuable insights and create a more intelligent food supply chain.
-          </p>
-          <p>
-            Join us in building a community that values freshness, quality, and direct relationships.
-          </p>
+            <ul className="list-disc list-inside space-y-2">
+                <li>
+                    <strong>Empowering Farmers:</strong> We provide farmers with direct market access, fair pricing, and AI-powered tools to optimize their sales.
+                </li>
+                <li>
+                    <strong>Quality for Buyers:</strong> Buyers get access to the freshest produce directly from the source, with transparent information about its origin.
+                </li>
+                 <li>
+                    <strong>Community Focused:</strong> By supporting local agriculture, you contribute to stronger local economies and a more sustainable food future.
+                </li>
+            </ul>
         </CardContent>
       </Card>
     </div>
