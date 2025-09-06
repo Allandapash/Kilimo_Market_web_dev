@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Leaf, Bell, Menu, ShoppingCart, LogOut, UserCircle } from 'lucide-react';
+import { Leaf, Bell, Menu, ShoppingCart, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
