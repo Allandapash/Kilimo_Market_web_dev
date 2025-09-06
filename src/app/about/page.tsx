@@ -5,7 +5,7 @@ export default function AboutPage() {
   return (
     <div className="container mx-auto max-w-4xl px-4 py-12">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-bold font-headline text-primary">About MavunoLink</h1>
+        <h1 className="text-5xl font-bold font-headline text-primary">About MavunoLink Africa</h1>
         <p className="mt-4 text-lg text-muted-foreground">
           Connecting local farmers directly with buyers to foster a fresher, more sustainable food system.
         </p>
@@ -20,7 +20,7 @@ export default function AboutPage() {
         </CardHeader>
         <CardContent className="space-y-4 text-foreground/90">
           <p>
-            At MavunoLink, our mission is to bridge the gap between the hardworking farmers who cultivate our food and the buyers who seek fresh, high-quality produce. We believe in the power of direct connections to create a more transparent, efficient, and sustainable agricultural marketplace.
+            At MavunoLink Africa, our mission is to bridge the gap between the hardworking farmers who cultivate our food and the buyers who seek fresh, high-quality produce. We believe in the power of direct connections to create a more transparent, efficient, and sustainable agricultural marketplace.
           </p>
           <p>
             By removing unnecessary intermediaries, we empower farmers to get fair prices for their products and help buyers access the freshest goods directly from the source. Our platform is designed to be intuitive, powerful, and supportive of local economies.

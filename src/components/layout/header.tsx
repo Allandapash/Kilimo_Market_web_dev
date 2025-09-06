@@ -81,7 +81,7 @@ export function Header() {
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Leaf className="h-6 w-6 text-primary" />
             <span className="hidden font-bold sm:inline-block">
-              MavunoLink
+              MavunoLink Africa
             </span>
           </Link>
           {isMounted && <NavLinks />}
@@ -100,7 +100,7 @@ export function Header() {
                 <div className="flex flex-col space-y-4">
                     <Link href="/" className="mr-6 flex items-center space-x-2">
                         <Leaf className="h-6 w-6 text-primary" />
-                        <span className="font-bold">MavunoLink</span>
+                        <span className="font-bold">MavunoLink Africa</span>
                     </Link>
                     {isMounted && <NavLinks className="flex-col !space-x-0 space-y-2 items-start" />}
                 </div>

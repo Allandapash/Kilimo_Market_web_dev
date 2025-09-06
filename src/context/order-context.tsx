@@ -20,7 +20,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     setIsMounted(true);
     try {
-        const item = window.localStorage.getItem('mavunolink-orders');
+        const item = window.localStorage.getItem('mavunolink-africa-orders');
         if (item) {
             setOrders(JSON.parse(item));
         }
@@ -34,7 +34,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     // Only run this effect on the client and after initial mount
     if (isMounted) {
         try {
-            window.localStorage.setItem('mavunolink-orders', JSON.stringify(orders));
+            window.localStorage.setItem('mavunolink-africa-orders', JSON.stringify(orders));
         } catch (error) {
             console.error("Failed to save orders to local storage", error);
         }
