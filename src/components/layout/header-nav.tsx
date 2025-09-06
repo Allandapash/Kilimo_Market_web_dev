@@ -74,7 +74,7 @@ export function HeaderNav() {
                 href={item.href}
                 className={cn(
                 'text-sm font-medium transition-colors hover:text-primary',
-                (pathname === item.href || (item.href === '/dashboard' && pathname.startsWith('/listing'))) ? 'text-primary' : 'text-muted-foreground'
+                (pathname === item.href || (pathname.startsWith('/listing') && item.href === '/dashboard') || (pathname.startsWith('/dashboard') && item.href === '/dashboard')) ? 'text-primary' : 'text-muted-foreground'
                 )}
             >
                 {item.label}

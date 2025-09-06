@@ -2,6 +2,7 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 export enum UserRole {
     Buyer = 'buyer',
@@ -33,6 +34,8 @@ const MOCK_USERS: User[] = [
     { id: '3', name: 'Charles Transporter', email: 'driver@test.com', role: UserRole.TransportProvider }
 ];
 
+const COOKIE_NAME = 'mavunolink-africa-user';
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isMounted, setIsMounted] = useState(false);
@@ -40,13 +43,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     setIsMounted(true);
     try {
-        const storedUser = localStorage.getItem('mavunolink-africa-user');
+        const storedUser = Cookies.get(COOKIE_NAME);
         if (storedUser) {
             setUser(JSON.parse(storedUser));
         }
     } catch (error) {
-        console.error("Failed to parse user from local storage", error);
-        localStorage.removeItem('mavunolink-africa-user');
+        console.error("Failed to parse user from cookie", error);
+        Cookies.remove(COOKIE_NAME);
     }
   }, []);
 
@@ -56,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const foundUser = MOCK_USERS.find(u => u.email.toLowerCase() === email.toLowerCase());
             if (foundUser) { // In real app, you'd also check password hash
                 setUser(foundUser);
-                localStorage.setItem('mavunolink-africa-user', JSON.stringify(foundUser));
+                Cookies.set(COOKIE_NAME, JSON.stringify(foundUser), { expires: 7 }); // Expires in 7 days
                 resolve();
             } else {
                 reject(new Error('Invalid email or password.'));
@@ -87,7 +90,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('mavunolink-africa-user');
+    Cookies.remove(COOKIE_NAME);
   };
 
   return (
