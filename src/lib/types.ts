@@ -18,6 +18,7 @@ export interface Produce {
   image: string;
   aiHint: string;
   region: string;
+  mpesaNumber: string;
 }
 
 export interface CartItem extends Produce {

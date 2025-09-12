@@ -22,6 +22,7 @@ const initialListings: Produce[] = [
     image: 'https://picsum.photos/seed/carrots/600/400',
     aiHint: 'fresh carrots',
     region: 'Nairobi',
+    mpesaNumber: '254712345678',
   },
   {
     id: '2',
@@ -37,6 +38,7 @@ const initialListings: Produce[] = [
     image: 'https://picsum.photos/seed/apples/600/400',
     aiHint: 'red apples',
     region: 'Uasin Gishu',
+    mpesaNumber: '254723456789',
   },
   {
     id: '3',
@@ -52,6 +54,7 @@ const initialListings: Produce[] = [
     image: 'https://picsum.photos/seed/tomatoes/600/400',
     aiHint: 'fresh tomatoes',
     region: 'Kisumu',
+    mpesaNumber: '254734567890',
   },
   {
     id: '4',
@@ -67,6 +70,7 @@ const initialListings: Produce[] = [
     image: 'https://picsum.photos/seed/wheat/600/400',
     aiHint: 'wheat field',
     region: 'Nakuru',
+    mpesaNumber: '254745678901',
   },
   {
     id: '5',
@@ -82,6 +86,7 @@ const initialListings: Produce[] = [
     image: 'https://picsum.photos/seed/corn/600/400',
     aiHint: 'corn cobs',
     region: 'Kiambu',
+    mpesaNumber: '254756789012',
   },
   {
     id: '6',
@@ -97,6 +102,7 @@ const initialListings: Produce[] = [
     image: 'https://picsum.photos/seed/strawberries/600/400',
     aiHint: 'fresh strawberries',
     region: 'Nyeri',
+    mpesaNumber: '254767890123',
   }
 ];
 
@@ -107,10 +113,12 @@ if (process.env.NODE_ENV !== 'production') {
   }
 }
 
-const getListingsStore = () => {
+const getListingsStore = (): Produce[] => {
     if (process.env.NODE_ENV === 'production') {
+        // In a real app this would fetch from a database
         return [...initialListings];
     }
+    // In dev, use the global variable to persist state
     return global.__listings!;
 }
 
@@ -123,12 +131,15 @@ const setListingsStore = (newListings: Produce[]) => {
 
 export async function getProduceListings(): Promise<Produce[]> {
   const listings = getListingsStore();
-  return new Promise(resolve => setTimeout(() => resolve([...listings]), 50));
+  // Simulate network delay
+  return new Promise(resolve => setTimeout(() => resolve(listings), 50));
 }
 
 export async function getProduceListingById(id: string): Promise<Produce | undefined> {
   const listings = getListingsStore();
-  return new Promise(resolve => setTimeout(() => resolve(listings.find(item => item.id === id)), 50));
+  const listing = listings.find(item => item.id === id)
+  // Simulate network delay
+  return new Promise(resolve => setTimeout(() => resolve(listing), 50));
 }
 
 export async function addProduceListing(listing: Omit<Produce, 'id' | 'location' | 'aiHint'>) {

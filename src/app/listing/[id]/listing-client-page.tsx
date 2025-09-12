@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { MapPin, Calendar, Scale, ShoppingCart, Minus, Plus } from 'lucide-react';
+import { MapPin, Calendar, Scale, ShoppingCart, Minus, Plus, Phone } from 'lucide-react';
 import { format } from 'date-fns';
 import { ListingMap } from '@/components/listing-map';
 import { useCart } from '@/context/cart-context';
@@ -73,6 +73,12 @@ export default function ListingClientPage({ listing }: { listing: Produce }) {
                 <span className="text-base font-normal text-muted-foreground"> / {listing.unit}</span>
               </p>
               <p className="text-foreground/90 font-body mb-6">{listing.description}</p>
+              
+              <div className="flex items-center text-sm mb-4">
+                  <Phone className="mr-3 h-5 w-5 text-muted-foreground" />
+                  <span>M-Pesa Number: <span className='font-semibold'>{listing.mpesaNumber}</span></span>
+                </div>
+
               <Separator className="my-4" />
               <div className="space-y-3 text-sm">
                 <div className="flex items-center">

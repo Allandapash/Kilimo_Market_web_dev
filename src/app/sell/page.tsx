@@ -33,6 +33,7 @@ const sellFormSchema = z.object({
   availability: z.date(),
   description: z.string().max(500).optional(),
   farmName: z.string().min(2, { message: "Farm name is required." }),
+  mpesaNumber: z.string().regex(/^254\d{9}$/, { message: "Enter a valid Safaricom number (e.g., 2547...)."}),
   image: z.string().min(1, { message: "An image is required for verification." }),
   region: z.string().min(1, { message: "Please select your region."}),
 });
@@ -63,6 +64,7 @@ export default function SellPage() {
       availability: new Date(),
       description: '',
       farmName: '',
+      mpesaNumber: '254',
       image: '',
       region: '',
     },
@@ -100,11 +102,11 @@ export default function SellPage() {
         await handleAddProduce(data);
         toast({
           title: 'Listing Submitted!',
-          description: `Your listing for ${data.name} has been created and is now visible on the dashboard.`,
+          description: `Your listing for ${data.name} has been created and is now visible on the marketplace.`,
           variant: 'default',
         });
         form.reset();
-        router.push('/dashboard');
+        router.push('/marketplace');
     } catch (e) {
         toast({
             variant: 'destructive',
@@ -276,6 +278,15 @@ export default function SellPage() {
                     <FormMessage />
                   </FormItem>
                 )} />
+
+                <FormField name="mpesaNumber" control={form.control} render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>M-Pesa Number</FormLabel>
+                    <FormControl><Input type="tel" placeholder="254712345678" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+
 
                 <FormField name="description" control={form.control} render={({ field }) => (
                   <FormItem className="md:col-span-2">
