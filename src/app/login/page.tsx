@@ -66,7 +66,7 @@ export default function LoginPage() {
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold font-headline">Welcome Back</CardTitle>
-          <CardDescription>Log in to your MavunoLink Africa account.</CardDescription>
+          <CardDescription>Log in to your Kilimo_Market African account.</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>

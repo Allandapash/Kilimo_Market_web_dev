@@ -14,7 +14,7 @@ export default function Home() {
     <div className="flex flex-col min-h-[calc(100vh-3.5rem)]">
       <section className="relative w-full h-[60vh] md:h-[70vh] flex items-center justify-center text-center text-white">
         <Image
-          src="https://picsum.photos/1920/1080?random=18"
+          src="https://picsum.photos/seed/agritech-field/1920/1080"
           alt="A farmer using a tablet in a field, representing modern agriculture technology."
           fill
           className="object-cover"
@@ -27,7 +27,7 @@ export default function Home() {
             Connecting Farmers and Buyers
           </h1>
           <p className="mt-4 text-lg md:text-xl max-w-3xl mx-auto drop-shadow-md">
-            MavunoLink Africa is the premier marketplace for fresh, high-quality produce directly from the source. Discover, buy, and sell with confidence.
+            Kilimo_Market African is the premier marketplace for fresh, high-quality produce directly from the source. Discover, buy, and sell with confidence.
           </p>
           <div className="mt-8 flex justify-center gap-4">
             <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">

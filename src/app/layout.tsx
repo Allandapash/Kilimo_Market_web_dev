@@ -16,7 +16,7 @@ const ptSans = PT_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'MavunoLink Africa Marketplace',
+  title: 'Kilimo_Market African Marketplace',
   description: 'Connecting Farmers and Buyers Directly',
 };
 

@@ -6,7 +6,7 @@ export default function AboutPage() {
   return (
     <div className="container mx-auto max-w-4xl px-4 py-12">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-bold font-headline text-primary">About MavunoLink Africa</h1>
+        <h1 className="text-5xl font-bold font-headline text-primary">About Kilimo_Market African</h1>
         <p className="mt-4 text-lg text-muted-foreground">
           Connecting local farmers directly with buyers to foster a fresher, more sustainable food system.
         </p>

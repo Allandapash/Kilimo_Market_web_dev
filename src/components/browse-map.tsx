@@ -35,7 +35,7 @@ export default function BrowseMap({ listings }: BrowseMapProps) {
           defaultZoom={6}
           gestureHandling={'greedy'}
           disableDefaultUI={true}
-          mapId={'mavunolink-africa-map'}
+          mapId={'kilimomarket-african-map'}
         >
           {listings.map((listing) => (
             <AdvancedMarker
