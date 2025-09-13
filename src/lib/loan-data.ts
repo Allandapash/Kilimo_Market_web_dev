@@ -17,7 +17,7 @@ export const loanProviders: LoanProvider[] = [
     interest_rate: 14.5,
     max_amount: 500000,
     contact: 'loans@equitybank.co.ke',
-    logo: 'https://picsum.photos/seed/equity-logo/200/200',
+    logo: 'https://picsum.photos/seed/equity/200/200',
     aiHint: 'bank logo'
   },
   {
@@ -26,7 +26,7 @@ export const loanProviders: LoanProvider[] = [
     interest_rate: 12.0,
     max_amount: 250000,
     contact: 'agri@stimasacco.com',
-    logo: 'https://picsum.photos/seed/stima-logo/200/200',
+    logo: 'https://picsum.photos/seed/stima/200/200',
     aiHint: 'financial logo'
   },
   {
@@ -35,7 +35,25 @@ export const loanProviders: LoanProvider[] = [
     interest_rate: 10.0,
     max_amount: 100000,
     contact: 'info@wakulimacoop.org',
-    logo: 'https://picsum.photos/seed/wakulima-logo/200/200',
+    logo: 'https://picsum.photos/seed/wakulima/200/200',
     aiHint: 'cooperative logo'
+  },
+  {
+    id: 'provider-4',
+    name: 'World Bank',
+    interest_rate: 9.5,
+    max_amount: 1000000,
+    contact: 'agri-finance@worldbank.org',
+    logo: 'https://picsum.photos/seed/worldbank/200/200',
+    aiHint: 'global bank logo'
+  },
+  {
+    id: 'provider-5',
+    name: 'Britam',
+    interest_rate: 13.0,
+    max_amount: 300000,
+    contact: 'agribusiness@britam.com',
+    logo: 'https://picsum.photos/seed/britam/200/200',
+    aiHint: 'insurance logo'
   }
 ];
