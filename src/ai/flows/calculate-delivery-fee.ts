@@ -35,7 +35,7 @@ const prompt = ai.definePrompt({
     name: 'calculateDeliveryFeePrompt',
     input: {schema: DeliveryFeeInputSchema},
     output: {schema: DeliveryFeeOutputSchema},
-    prompt: `You are a logistics coordinator for Kilimo_Market African, a Kenyan agricultural marketplace. Your task is to calculate a delivery fee for an order based on the provided details.
+    prompt: `You are a logistics coordinator for Kilimo_Market Africa, a Kenyan agricultural marketplace. Your task is to calculate a delivery fee for an order based on the provided details.
 
     **IMPORTANT RULE:** The final delivery fee CANNOT be more than the order subtotal. If your calculated fee is higher than the subtotal, you must cap the delivery fee at the subtotal amount and mention in your reasoning that the fee was capped.
 

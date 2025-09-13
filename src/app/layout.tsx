@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import { PT_Sans } from 'next/font/google';
 import './globals.css';
@@ -16,7 +17,7 @@ const ptSans = PT_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Kilimo_Market African Marketplace',
+  title: 'Kilimo_Market Africa Marketplace',
   description: 'Connecting Farmers and Buyers Directly',
 };
 

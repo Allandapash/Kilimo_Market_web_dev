@@ -17,7 +17,7 @@ export function Header() {
               <Link href="/" className="mr-6 flex items-center space-x-2">
                 <Leaf className="h-6 w-6 text-primary" />
                 <span className="font-bold sm:inline-block">
-                  Kilimo_Market African
+                  Kilimo_Market Africa
                 </span>
               </Link>
             </div>

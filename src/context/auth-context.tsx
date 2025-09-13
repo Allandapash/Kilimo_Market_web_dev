@@ -34,7 +34,7 @@ const MOCK_USERS: User[] = [
     { id: '3', name: 'Charles Transporter', email: 'driver@test.com', role: UserRole.TransportProvider }
 ];
 
-const COOKIE_NAME = 'kilimo-market-african-user';
+const COOKIE_NAME = 'kilimo-market-africa-user';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);

@@ -18,7 +18,7 @@ export default function OrdersPage() {
     const generateReceipt = (order: Order): string => {
         const subtotal = order.items.reduce((sum, item) => sum + item.price * item.orderQuantity, 0);
         let receipt = `========================================\n`;
-        receipt += `      Kilimo_Market African Receipt\n`;
+        receipt += `      Kilimo_Market Africa Receipt\n`;
         receipt += `========================================\n\n`;
         receipt += `Order ID: ${order.id}\n`;
         receipt += `Order Date: ${format(new Date(order.orderDate), 'MMMM dd, yyyy, h:mm a')}\n\n`;
@@ -55,7 +55,7 @@ export default function OrdersPage() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `Kilimo_Market-African-Receipt-${order.id}.txt`;
+        a.download = `Kilimo_Market-Africa-Receipt-${order.id}.txt`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);

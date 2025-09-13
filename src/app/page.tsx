@@ -73,7 +73,7 @@ export default function Home() {
             Connecting Farmers and Buyers
           </h1>
           <p className="mt-4 text-lg md:text-xl max-w-3xl mx-auto drop-shadow-md">
-            Kilimo_Market African is the premier marketplace for fresh, high-quality produce directly from the source. Discover, buy, and sell with confidence.
+            Kilimo_Market Africa is the premier marketplace for fresh, high-quality produce directly from the source. Discover, buy, and sell with confidence.
           </p>
           <div className="mt-8 flex justify-center gap-4">
             <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
@@ -127,7 +127,7 @@ export default function Home() {
       <section id="about" className="bg-card py-20 px-4">
         <div className="container mx-auto max-w-4xl">
            <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold font-headline text-primary">About Kilimo_Market African</h2>
+            <h2 className="text-4xl font-bold font-headline text-primary">About Kilimo_Market Africa</h2>
             <p className="mt-4 text-lg text-muted-foreground">
               Connecting local farmers directly with buyers to foster a fresher, more sustainable food system.
             </p>

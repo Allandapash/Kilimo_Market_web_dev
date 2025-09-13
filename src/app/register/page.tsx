@@ -66,7 +66,7 @@ export default function RegisterPage() {
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold font-headline">Create an Account</CardTitle>
-          <CardDescription>Join the Kilimo_Market African community today.</CardDescription>
+          <CardDescription>Join the Kilimo_Market Africa community today.</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
