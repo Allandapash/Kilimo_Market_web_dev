@@ -56,3 +56,26 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  /* 3D Flip Card Animation */
+  .flip-card-container {
+    transform-style: preserve-3d;
+  }
+  .flip-card-inner {
+    @apply relative w-full h-full text-center transition-transform duration-700;
+    transform-style: preserve-3d;
+  }
+  .flip-card-container:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+  .flip-card-front,
+  .flip-card-back {
+    @apply absolute w-full h-full;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+  }
+  .flip-card-back {
+    transform: rotateY(180deg);
+  }
+}

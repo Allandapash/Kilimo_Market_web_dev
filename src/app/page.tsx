@@ -22,6 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import AnimatedHeadline from '@/components/animated-headline';
+import { loanProviders } from '@/lib/loan-data';
 
 
 const contactFormSchema = z.object({
@@ -161,30 +162,52 @@ export default function Home() {
               </CardContent>
             </Card>
           </div>
+        </div>
+      </section>
 
-          <Card className="mt-8">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Handshake className="text-primary" />
-                Our Partners
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-foreground/90">
-                <p>We collaborate with leading financial institutions to provide our farmers with access to the capital they need to grow their businesses.</p>
-                <ul className="list-disc list-inside space-y-2 font-semibold">
-                    <li>Equity Bank AgriLoan</li>
-                    <li>Stima SACCO FarmerPlus</li>
-                    <li>Wakulima Cooperative Fund</li>
-                    <li>World Bank</li>
-                    <li>Britam</li>
-                </ul>
-            </CardContent>
-          </Card>
+      {/* Partners Section */}
+      <section id="partners" className="bg-background py-20 px-4">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold font-headline text-primary flex items-center justify-center gap-3">
+              <Handshake /> Our Partners
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground">We collaborate with leading financial institutions to provide our farmers with access to the capital they need to grow their businesses.</p>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 [perspective:1000px]">
+            {loanProviders.map(provider => (
+              <div key={provider.id} className="flip-card-container h-48">
+                <div className="flip-card-inner">
+                  {/* Front of Card */}
+                  <div className="flip-card-front bg-card rounded-lg border flex items-center justify-center p-4">
+                    <div className="relative w-3/4 h-3/4">
+                       <Image 
+                          src={provider.logo}
+                          alt={`${provider.name} logo`}
+                          fill
+                          className="object-contain"
+                          data-ai-hint={provider.aiHint}
+                        />
+                    </div>
+                  </div>
+                  {/* Back of Card */}
+                  <div className="flip-card-back bg-primary text-primary-foreground rounded-lg border flex flex-col items-center justify-center p-4 text-center">
+                      <h3 className="font-bold">{provider.name}</h3>
+                      <p className="text-sm">Interest: {provider.interest_rate}% p.a.</p>
+                      <Button asChild variant="secondary" size="sm" className="mt-3">
+                        <Link href="/loans">Learn More</Link>
+                      </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
        {/* Contact Section */}
-       <section id="contact" className="bg-background py-20 px-4">
+       <section id="contact" className="bg-card py-20 px-4">
         <div className="container mx-auto max-w-2xl">
           <Card>
               <CardHeader className="text-center">
