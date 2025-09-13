@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import AnimatedHeadline from '@/components/animated-headline';
 
 
 const contactFormSchema = z.object({
@@ -69,9 +70,7 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 p-4">
-          <h1 className="text-5xl md:text-7xl font-bold font-headline drop-shadow-lg">
-            Connecting Farmers and Buyers
-          </h1>
+          <AnimatedHeadline />
           <p className="mt-4 text-lg md:text-xl max-w-3xl mx-auto drop-shadow-md">
             Kilimo_Market Africa is the premier marketplace for fresh, high-quality produce directly from the source. Discover, buy, and sell with confidence.
           </p>
