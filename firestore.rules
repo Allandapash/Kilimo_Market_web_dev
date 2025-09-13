@@ -4,49 +4,49 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // Helper function to check if user is authenticated
-    function isAuthenticated() {
-      return request.auth != null;
+    // Default deny all
+    match /{document=**} {
+      allow read, write: if false;
     }
 
-    // Helper function to check if user has a specific role
-    function hasRole(role) {
-        return isAuthenticated() && get(/databases/$(database)/documents/Users/$(request.auth.uid)).data.role == role;
+    // Allow public read on produce listings and loan providers
+    match /Produce/{produceId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == request.resource.data.farmer_id; // Only owner can write
     }
-
-    // Users can only read/write their own profile
-    match /Users/{userId} {
-      allow read, update, delete: if request.auth.uid == userId;
-      allow create: if isAuthenticated();
-    }
-
-    // Anyone can read listings, but only farmers can create/update/delete them
-    match /ProduceListings/{listingId} {
-        allow read: if true;
-        allow create, update, delete: if hasRole('farmer');
-    }
-
-    // Anyone can read loan providers
+    
     match /LoanProviders/{providerId} {
         allow read: if true;
-        // Admins/internal staff would have write access
-        allow write: if false; // Lock down for now
+        allow write: if false; // Admin-only from console
     }
 
-    // Farmers can create their own loan applications
-    // They can only read their own applications
+    // Rules for User profiles
+    match /Users/{userId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Rules for Loan Applications
     match /LoanApplications/{applicationId} {
-        allow create: if hasRole('farmer') && request.resource.data.farmer_id == request.auth.uid;
-        allow read: if request.resource.data.farmer_id == request.auth.uid || hasRole('provider'); // Or a provider role
+        // A farmer can create their own loan application
+        allow create: if request.auth != null && request.auth.uid == request.resource.data.farmer_id;
         
-        // Providers can update status (approve/reject), farmers cannot
-        allow update: if hasRole('provider') && !(request.resource.data.amount is number); // simplified provider role check
+        // A farmer can read their own loan applications
+        allow read: if request.auth != null && get(/databases/$(database)/documents/Users/$(request.auth.uid)).data.role == 'farmer' && resource.data.farmer_id == request.auth.uid;
+
+        // An admin/provider can read all and update status (simplified)
+        // In a real app, you'd check for a specific 'provider' role
+        allow read, update: if request.auth != null && get(/databases/$(database)/documents/Users/$(request.auth.uid)).data.role == 'admin';
     }
 
-    // Transactions can be created, but not easily read/modified by clients
-    // This would typically be handled by backend logic (e.g. Cloud Functions)
+    // Rules for Transactions
     match /Transactions/{transactionId} {
-        allow read, write: if false; // Locked down, managed by server
+        // Anyone authenticated can create a transaction (e.g. a buyer)
+        allow create: if request.auth != null;
+
+        // Only the participating farmer can read their transactions
+        allow read: if request.auth != null && resource.data.farmer_id == request.auth.uid;
     }
   }
 }
