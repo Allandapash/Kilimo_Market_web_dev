@@ -16,6 +16,7 @@ import { loanProviders, type LoanProvider } from '@/lib/loan-data'; // Mock data
 import { Loader2 } from 'lucide-react';
 import { useAuth } from '@/context/auth-context';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 // In a real app, this would be fetched from the logged-in user's data
 const USER_LOAN_LIMIT = 10000;
@@ -111,8 +112,17 @@ export default function LoanApplicationPage() {
                         {loanProviders.map((provider) => (
                           <FormItem key={provider.id}>
                             <FormControl>
-                                <Label className="block cursor-pointer rounded-lg border bg-card p-4 has-[input:checked]:border-primary has-[input:checked]:ring-1 has-[input:checked]:ring-primary">
+                                <Label className="block cursor-pointer rounded-lg border bg-card p-4 text-center has-[input:checked]:border-primary has-[input:checked]:ring-1 has-[input-checked]:ring-primary">
                                     <RadioGroupItem value={provider.id} className="sr-only" />
+                                    <div className="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden">
+                                       <Image 
+                                            src={provider.logo} 
+                                            alt={`${provider.name} logo`} 
+                                            fill
+                                            className="object-contain" 
+                                            data-ai-hint={provider.aiHint}
+                                        />
+                                    </div>
                                     <h3 className="font-bold">{provider.name}</h3>
                                     <p className="text-sm text-muted-foreground">Interest: {provider.interest_rate}% p.a.</p>
                                     <p className="text-sm text-muted-foreground">Max Amount: KES {provider.max_amount.toLocaleString()}</p>
