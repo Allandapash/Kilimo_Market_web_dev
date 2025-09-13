@@ -23,7 +23,7 @@ const USER_LOAN_LIMIT = 10000;
 const loanFormSchema = z.object({
   amount: z.coerce
     .number()
-    .positive({ message: "Loan amount must be positive." })
+    .positive({ message: "Loan amount must be be positive." })
     .max(USER_LOAN_LIMIT, { message: `Amount cannot exceed your loan limit of KES ${USER_LOAN_LIMIT.toLocaleString()}.` }),
   providerId: z.string().min(1, { message: "You must select a loan provider." }),
 });
