@@ -132,6 +132,16 @@ export default function Home() {
               Connecting local farmers directly with buyers to foster a fresher, more sustainable food system.
             </p>
           </div>
+          
+          <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden shadow-lg mb-12">
+            <Image
+                src="https://picsum.photos/seed/about-market-tech/1200/600"
+                alt="A bustling African market with fresh produce, integrated with mobile technology."
+                fill
+                className="object-cover"
+                data-ai-hint="african market"
+            />
+          </div>
 
           <div className="grid md:grid-cols-2 gap-8">
             <Card>
