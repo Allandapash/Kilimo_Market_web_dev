@@ -60,11 +60,11 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] md:h-[70vh] flex items-center justify-center text-center text-white">
         <Image
-          src="https://picsum.photos/seed/local-market-tech/1920/1080"
-          alt="Vibrant outdoor African market with farmers selling fresh produce and a person holding a smartphone."
+          src="https://picsum.photos/seed/market-with-phone/1920/1080"
+          alt="Vibrant outdoor African market with farmers selling fresh produce and a person holding a smartphone showing the app."
           fill
           className="object-cover"
-          data-ai-hint="african market"
+          data-ai-hint="african market with phone"
           priority
         />
         <div className="absolute inset-0 bg-black/50" />
