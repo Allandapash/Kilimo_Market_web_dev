@@ -1,10 +1,13 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, DollarSign, Tractor, TrendingUp } from 'lucide-react';
+import { ArrowRight, DollarSign, Tractor, TrendingUp, Banknote } from 'lucide-react';
 import Link from 'next/link';
 
 export default function FarmerDashboard() {
+    // In a real app, this would be fetched from the user's data
+    const userLoanLimit = 10000; 
+
     return (
         <div className="container mx-auto max-w-4xl px-4 py-12">
             <div className="text-center mb-12">
@@ -62,6 +65,23 @@ export default function FarmerDashboard() {
                        <Button asChild className="w-full">
                            <Link href="/trends">
                                 View Trends <ArrowRight className="ml-2" />
+                           </Link>
+                       </Button>
+                    </CardContent>
+                </Card>
+                <Card className="flex flex-col lg:col-span-3">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                           <Banknote className="text-primary" /> Apply for a Loan
+                        </CardTitle>
+                        <CardDescription>
+                            Your loan limit is <span className="font-bold text-primary">KES {userLoanLimit.toLocaleString()}</span>. Access funds to grow your farming business.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-grow flex items-end">
+                       <Button asChild className="w-full">
+                           <Link href="/loans">
+                                Apply Now <ArrowRight className="ml-2" />
                            </Link>
                        </Button>
                     </CardContent>

@@ -1,32 +1,75 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
 
-import {setGlobalOptions} from "firebase-functions";
-import {onRequest} from "firebase-functions/https";
+import { setGlobalOptions } from "firebase-functions";
 import * as logger from "firebase-functions/logger";
+import { onDocumentWritten } from "firebase-functions/v2/firestore";
+import * as admin from 'firebase-admin';
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
+admin.initializeApp();
+const db = admin.firestore();
 
-// For cost control, you can set the maximum number of containers that can be
-// running at the same time. This helps mitigate the impact of unexpected
-// traffic spikes by instead downgrading performance. This limit is a
-// per-function limit. You can override the limit for each function using the
-// `maxInstances` option in the function's options, e.g.
-// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
-// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
-// functions should each use functions.runWith({ maxInstances: 10 }) instead.
-// In the v1 API, each function can only serve one request per container, so
-// this will be the maximum concurrent request count.
+// Set global options for the functions.
 setGlobalOptions({ maxInstances: 10 });
 
-// export const helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+/**
+ * Cloud Function to update a farmer's loan limit when a new transaction is added.
+ * Triggered whenever a document is written in the "Transactions" collection.
+ */
+export const onTransactionCreate = onDocumentWritten("Transactions/{transactionId}", async (event) => {
+    // We only act on document creation
+    if (!event.data?.after.exists || event.data.before.exists) {
+        logger.info("Not a new transaction, exiting function.");
+        return null;
+    }
+
+    const transactionData = event.data.after.data();
+    const farmerId = transactionData.farmer_id;
+    const transactionAmount = transactionData.amount;
+
+    if (!farmerId || typeof transactionAmount !== 'number') {
+        logger.error("Missing farmerId or invalid amount in transaction.", { data: transactionData });
+        return null;
+    }
+
+    const farmerRef = db.collection('Users').doc(farmerId);
+
+    try {
+        await db.runTransaction(async (t) => {
+            const farmerDoc = await t.get(farmerRef);
+
+            if (!farmerDoc.exists) {
+                logger.error("Farmer document does not exist:", { farmerId });
+                return;
+            }
+
+            const farmerData = farmerDoc.data()!;
+            
+            // Calculate new cumulative sales
+            const currentTotalSales = farmerData.total_sales || 0;
+            const newTotalSales = currentTotalSales + transactionAmount;
+            
+            // Calculate new loan limit
+            const defaultLimit = 5000;
+            const newLoanLimit = defaultLimit + (newTotalSales * 0.10);
+
+            logger.info(`Updating loan limit for farmer ${farmerId}.`, {
+                oldSales: currentTotalSales,
+                newSales: newTotalSales,
+                oldLimit: farmerData.loan_limit,
+                newLimit: newLoanLimit
+            });
+            
+            // Update farmer's document
+            t.update(farmerRef, {
+                total_sales: newTotalSales,
+                loan_limit: newLoanLimit
+            });
+        });
+
+        logger.info("Successfully updated loan limit.", { farmerId });
+        return null;
+
+    } catch (error) {
+        logger.error("Transaction failed: ", { error: error, farmerId: farmerId });
+        return null;
+    }
+});
