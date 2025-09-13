@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Bell, Menu, ShoppingCart, LogOut, Store } from 'lucide-react';
+import { Bell, Menu, ShoppingCart, LogOut, Store, Banknote } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -40,6 +40,7 @@ const farmerNavItems = [
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/sell', label: 'Sell' },
   { href: '/trends', label: 'Trends' },
+  { href: '/loans', label: 'Loans' },
 ];
 
 const transportProviderNavItems = [
@@ -79,7 +80,7 @@ export function HeaderNav() {
                 href={item.href}
                 className={cn(
                 'text-sm font-medium transition-colors hover:text-primary',
-                (pathname === item.href || (pathname.startsWith('/listing') && item.href === '/marketplace') || (pathname.startsWith('/marketplace') && item.href === '/marketplace') || (pathname.startsWith('/dashboard') && item.href === '/dashboard')) ? 'text-primary' : 'text-muted-foreground'
+                (pathname === item.href || (pathname.startsWith('/listing') && item.href === '/marketplace') || (pathname.startsWith('/marketplace') && item.href === '/marketplace') || (pathname.startsWith('/dashboard') && item.href === '/dashboard') || (pathname.startsWith('/loans') && item.href === '/loans')) ? 'text-primary' : 'text-muted-foreground'
                 )}
             >
                 {item.label}
