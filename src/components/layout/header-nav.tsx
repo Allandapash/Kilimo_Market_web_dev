@@ -23,8 +23,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 const baseNavItems = [
   { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/#about', label: 'About' },
+  { href: '/#contact', label: 'Contact' },
 ];
 
 const sharedLoggedInItems = [
