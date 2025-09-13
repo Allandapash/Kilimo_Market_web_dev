@@ -56,7 +56,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-3.5rem)]">
+    <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] md:h-[70vh] flex items-center justify-center text-center text-white">
         <Image
@@ -264,5 +264,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
