@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Info, Users, Tractor } from "lucide-react";
+import { Info, Users, Tractor, Handshake } from "lucide-react";
 
 export default function AboutPage() {
   return (
@@ -60,6 +60,23 @@ export default function AboutPage() {
                  <li>
                     <strong>Community Focused:</strong> By supporting local agriculture, you contribute to stronger local economies and a more sustainable food future.
                 </li>
+            </ul>
+        </CardContent>
+      </Card>
+
+      <Card className="mt-8">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Handshake className="text-primary" />
+            Our Partners
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4 text-foreground/90">
+            <p>We collaborate with leading financial institutions to provide our farmers with access to the capital they need to grow their businesses.</p>
+            <ul className="list-disc list-inside space-y-2 font-semibold">
+                <li>Equity Bank AgriLoan</li>
+                <li>Stima SACCO FarmerPlus</li>
+                <li>Wakulima Cooperative Fund</li>
             </ul>
         </CardContent>
       </Card>
