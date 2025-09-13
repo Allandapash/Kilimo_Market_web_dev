@@ -28,7 +28,7 @@ const sellFormSchema = z.object({
   name: z.string().min(3, { message: "Produce name must be at least 3 characters." }),
   category: z.enum(['Vegetable', 'Fruit', 'Grain', 'Legume', 'Meat', 'Dairy', 'Other']),
   quantity: z.coerce.number().positive({ message: "Quantity must be a positive number." }),
-  unit: z.enum(['kg', 'lbs', 'item', 'bunch']),
+  unit: z.enum(['kg', 'lbs', 'item', 'bunch', 'Litre']),
   price: z.coerce.number().positive({ message: "Price must be a positive number." }),
   availability: z.date(),
   description: z.string().max(500).optional(),
@@ -221,6 +221,7 @@ export default function SellPage() {
                           <SelectItem value="lbs">lbs</SelectItem>
                           <SelectItem value="item">item</SelectItem>
                           <SelectItem value="bunch">bunch</SelectItem>
+                          <SelectItem value="Litre">Litre</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

@@ -1,4 +1,4 @@
-# **App Name**: AgriLink Marketplace
+# **App Name**: Kilimo_Market Africa
 
 ## Core Features:
 

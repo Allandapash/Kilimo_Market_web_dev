@@ -6,7 +6,7 @@ export interface Produce {
   name: string;
   category: 'Vegetable' | 'Fruit' | 'Grain' | 'Legume' | 'Meat' | 'Dairy' | 'Other';
   quantity: number;
-  unit: 'kg' | 'lbs' | 'item' | 'bunch';
+  unit: 'kg' | 'lbs' | 'item' | 'bunch' | 'Litre';
   price: number;
   location: {
     lat: number;

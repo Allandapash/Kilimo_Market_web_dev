@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -14,7 +15,7 @@ import {z} from 'genkit';
 const VerifyListingInputSchema = z.object({
   name: z.string().describe('The name of the produce.'),
   price: z.number().describe('The price per unit.'),
-  unit: z.string().describe('The unit of measurement (e.g., kg, lbs).'),
+  unit: z.string().describe('The unit of measurement (e.g., kg, lbs, Litre).'),
   region: z.string().describe('The region in Kenya where the produce is being sold.'),
   image: z.string().describe("A data URI of the produce image. Expected format: 'data:<mimetype>;base64,<encoded_data>'."),
 });
