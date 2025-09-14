@@ -17,7 +17,7 @@ export const loanProviders: LoanProvider[] = [
     interest_rate: 14.5,
     max_amount: 500000,
     contact: 'loans@equitybank.co.ke',
-    logo: `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' width='200' height='200'><rect width='200' height='200' fill='%23F8F9FA'/><g transform='translate(50 50)'><path d='M84.2,66.3V33.7c0-1.8-1.5-3.3-3.3-3.3H20c-1.8,0-3.3,1.5-3.3,3.3v63.9c0,1.8,1.5,3.3,3.3,3.3h60.9c1.8,0,3.3-1.5,3.3-3.3V66.3z M50,66.3H20V33.7h30V66.3z' fill='%23D97706'/></g></svg>`,
+    logo: '/logos/equity.png',
     aiHint: 'equity bank logo'
   },
   {
