@@ -181,12 +181,11 @@ export default function Home() {
                 <div className="flip-card-inner">
                   {/* Front of Card */}
                   <div className="flip-card-front bg-card rounded-lg border flex items-center justify-center p-4">
-                    <div className="relative w-3/4 h-3/4">
-                       <Image 
+                    <div className="relative w-3/4 h-3/4 flex items-center justify-center">
+                       <img 
                           src={provider.logo}
                           alt={`${provider.name} logo`}
-                          fill
-                          className="object-contain"
+                          className="max-h-full max-w-full object-contain"
                           data-ai-hint={provider.aiHint}
                         />
                     </div>
