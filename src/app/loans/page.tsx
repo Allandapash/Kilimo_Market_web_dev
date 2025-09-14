@@ -114,7 +114,7 @@ export default function LoanApplicationPage() {
                             <FormControl>
                                 <Label className="block cursor-pointer rounded-lg border bg-card p-4 text-center has-[input:checked]:border-primary has-[input:checked]:ring-1 has-[input-checked]:ring-primary">
                                     <RadioGroupItem value={provider.id} className="sr-only" />
-                                    <div className="relative w-24 h-24 mx-auto mb-4">
+                                    <div className="relative w-full h-24 mx-auto mb-4">
                                        <Image 
                                             src={provider.logo} 
                                             alt={`${provider.name} logo`} 
