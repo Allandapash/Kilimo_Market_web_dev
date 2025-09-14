@@ -26,7 +26,7 @@ export const loanProviders: LoanProvider[] = [
     interest_rate: 12.0,
     max_amount: 250000,
     contact: 'agri@stimasacco.com',
-    logo: 'https://picsum.photos/seed/stima-sacco-logo/200/200',
+    logo: 'https://wakulimacooperative.co.ke',
     aiHint: 'stima sacco logo'
   },
   {
