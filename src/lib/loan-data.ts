@@ -17,7 +17,7 @@ export const loanProviders: LoanProvider[] = [
     interest_rate: 14.5,
     max_amount: 500000,
     contact: 'loans@equitybank.co.ke',
-    logo: '/logos/equity.png',
+    logo: 'https://www.equitygroupholdings.com/images/equity-logo.png',
     aiHint: 'equity bank logo'
   },
   {
@@ -26,7 +26,7 @@ export const loanProviders: LoanProvider[] = [
     interest_rate: 12.0,
     max_amount: 250000,
     contact: 'agri@stimasacco.com',
-    logo: 'https://picsum.photos/seed/stima-sacco-logo/200/200',
+    logo: 'https://stimasacco.com/assets/images/stima-logo.png',
     aiHint: 'stima sacco logo'
   },
   {
@@ -35,7 +35,7 @@ export const loanProviders: LoanProvider[] = [
     interest_rate: 10.0,
     max_amount: 100000,
     contact: 'info@wakulimacoop.org',
-    logo: 'https://picsum.photos/seed/wakulima-fund-logo/200/200',
+    logo: 'https://wakulimacooperative.co.ke/assets/logo.png',
     aiHint: 'cooperative fund logo'
   },
   {
