@@ -23,6 +23,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import AnimatedHeadline from '@/components/animated-headline';
 import { loanProviders } from '@/lib/loan-data';
+import MySimpleMap from '@/components/my-simple-map';
 
 
 const contactFormSchema = z.object({
@@ -122,9 +123,22 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Simple Map Section */}
+      <section className="bg-card py-20 px-4">
+        <div className="container mx-auto max-w-4xl">
+           <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold font-headline text-primary">Our Home Base</h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Centered in the heart of Nairobi, connecting all of Kenya.
+            </p>
+          </div>
+          <MySimpleMap />
+        </div>
+      </section>
       
       {/* About Section */}
-      <section id="about" className="bg-card py-20 px-4">
+      <section id="about" className="bg-background py-20 px-4">
         <div className="container mx-auto max-w-4xl">
            <div className="text-center mb-12">
             <h2 className="text-4xl font-bold font-headline text-primary">About Kilimo_Market Africa</h2>
@@ -166,7 +180,7 @@ export default function Home() {
       </section>
 
       {/* Partners Section */}
-      <section id="partners" className="bg-background py-20 px-4">
+      <section id="partners" className="bg-card py-20 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold font-headline text-primary flex items-center justify-center gap-3">
@@ -180,7 +194,7 @@ export default function Home() {
               <div key={provider.id} className="flip-card-container h-48">
                 <div className="flip-card-inner">
                   {/* Front of Card */}
-                  <div className="flip-card-front bg-card rounded-lg border flex items-center justify-center p-4">
+                  <div className="flip-card-front bg-background rounded-lg border flex items-center justify-center p-4">
                     <div className="relative w-3/4 h-3/4 flex items-center justify-center">
                        <img 
                           src={provider.logo}
@@ -206,7 +220,7 @@ export default function Home() {
       </section>
 
        {/* Contact Section */}
-       <section id="contact" className="bg-card py-20 px-4">
+       <section id="contact" className="bg-background py-20 px-4">
         <div className="container mx-auto max-w-2xl">
           <Card>
               <CardHeader className="text-center">
