@@ -17,11 +17,10 @@ export function ProduceCard({ listing }: ProduceCardProps) {
   return (
     <Card className="flex flex-col h-full overflow-hidden transition-all hover:shadow-xl">
        <CardHeader className="relative p-0 h-48 w-full">
-         <Image
+         <img
           src={listing.image}
           alt={listing.name}
-          fill
-          className="object-cover"
+          className="object-cover w-full h-full"
           data-ai-hint={listing.aiHint}
         />
         <Badge variant="secondary" className="absolute top-2 right-2">
@@ -46,3 +45,5 @@ export function ProduceCard({ listing }: ProduceCardProps) {
     </Card>
   );
 }
+
+    

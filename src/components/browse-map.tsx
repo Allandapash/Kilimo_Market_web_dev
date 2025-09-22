@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -21,7 +22,7 @@ export default function BrowseMap({ listings }: BrowseMapProps) {
             <CardContent className="text-center p-6">
                 <p className="text-destructive font-semibold">Map is not available.</p>
                 <p className="text-muted-foreground text-sm">Google Maps API key is missing or invalid.</p>
-                <p className="text-xs text-muted-foreground mt-2">Please add your key to the .env.local file.</p>
+                <p className="text-xs text-muted-foreground mt-2">Please add your key to the .env file.</p>
             </CardContent>
         </Card>
     )
@@ -59,7 +60,7 @@ export default function BrowseMap({ listings }: BrowseMapProps) {
             >
               <div className="p-2 font-body">
                 <div className="relative w-full h-24 mb-2 rounded-md overflow-hidden">
-                    <Image src={selected.image} alt={selected.name} fill className="object-cover" data-ai-hint={selected.aiHint}/>
+                    <img src={selected.image} alt={selected.name} className="object-cover w-full h-full" data-ai-hint={selected.aiHint}/>
                 </div>
                 <h3 className="font-bold font-headline text-md">{selected.name}</h3>
                 <p className="text-sm text-muted-foreground">{selected.farmName}</p>
@@ -75,3 +76,5 @@ export default function BrowseMap({ listings }: BrowseMapProps) {
     </Card>
   );
 }
+
+    

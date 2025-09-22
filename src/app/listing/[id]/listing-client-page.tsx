@@ -44,13 +44,11 @@ export default function ListingClientPage({ listing }: { listing: Produce }) {
       <div className="grid md:grid-cols-2 gap-8">
         <div>
           <div className="relative aspect-video w-full mb-4 overflow-hidden rounded-lg shadow-lg">
-            <Image
+            <img
               src={listing.image}
               alt={listing.name}
-              fill
-              className="object-cover"
+              className="object-cover w-full h-full"
               data-ai-hint={listing.aiHint}
-              priority
             />
           </div>
           <h2 className="text-2xl font-bold font-headline mb-2">Location</h2>
@@ -128,3 +126,5 @@ export default function ListingClientPage({ listing }: { listing: Produce }) {
     </div>
   );
 }
+
+    

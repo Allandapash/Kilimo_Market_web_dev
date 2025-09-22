@@ -115,7 +115,7 @@ export default function OrdersPage() {
                                     <div key={item.id} className="flex justify-between items-center text-sm">
                                         <div className="flex items-center gap-3">
                                              <div className="relative h-12 w-12 rounded-md overflow-hidden">
-                                                <Image src={item.image} alt={item.name} fill className="object-cover" data-ai-hint={item.aiHint} />
+                                                <img src={item.image} alt={item.name} className="object-cover w-full h-full" data-ai-hint={item.aiHint} />
                                             </div>
                                             <div>
                                                 <p className="font-medium">{item.name}</p>
@@ -138,3 +138,5 @@ export default function OrdersPage() {
         </div>
     );
 }
+
+    

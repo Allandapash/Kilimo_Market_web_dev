@@ -64,7 +64,7 @@ export default function CartPage() {
             });
         } catch (e) {
             const errorMessage = e instanceof Error ? e.message : String(e);
-            if (errorMessage.includes('503') || errorMessage.toLowerCase().includes('overloaded')) {
+            if (errorMessage.includes('503') || errorMessage.toLowerCase().includes('overloaded') || errorMessage.toLowerCase().includes('unavailable')) {
                 setCalculationError("The delivery calculation service is currently unavailable. Please try again in a moment.");
             } else {
                 setCalculationError("Could not calculate delivery fee. Please try again.");
@@ -113,7 +113,7 @@ export default function CartPage() {
                 {cartItems.map((item) => (
                     <Card key={item.id} className="flex items-center p-4">
                         <div className="relative h-24 w-24 rounded-md overflow-hidden mr-4">
-                            <Image src={item.image} alt={item.name} fill className="object-cover" data-ai-hint={item.aiHint} />
+                            <img src={item.image} alt={item.name} className="object-cover h-full w-full" data-ai-hint={item.aiHint} />
                         </div>
                         <div className="flex-grow">
                             <h3 className="font-semibold font-headline">{item.name}</h3>
